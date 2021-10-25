@@ -1,26 +1,35 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import { UseWalletProvider } from 'use-wallet'
+import InfoMessageProvider from './providers/InfoMessageProvider'
+import PinkFlamingoSocialClubProvider from './providers/PinkFlamingoSocialClubProvider'
+import TransactionProvider from './providers/TransactionProvider'
+import WalletButtonProvider from './providers/WalletButtonProvider'
+import config from './utils/appConfig'
+import Web3Provider from './providers/Web3Provider'
+import WalletButton from './components/wallet/WalletButton'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Providers>
+      <WalletButton />
+    </Providers>
+  )
 }
 
-export default App;
+const Providers: React.FC = ({ children }) => {
+  return (
+    <UseWalletProvider chainId={config.chainId}>
+      <Web3Provider>
+        <TransactionProvider>
+          <InfoMessageProvider>
+            <PinkFlamingoSocialClubProvider>
+              <WalletButtonProvider>{children}</WalletButtonProvider>
+            </PinkFlamingoSocialClubProvider>
+          </InfoMessageProvider>
+        </TransactionProvider>
+      </Web3Provider>
+    </UseWalletProvider>
+  )
+}
+
+export default App

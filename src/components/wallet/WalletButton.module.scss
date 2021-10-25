@@ -1,0 +1,137 @@
+.button {
+  text-transform: uppercase;
+  background-color: black;
+  color: white;
+  padding: 7.5px 15px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid white;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.button:hover {
+  background-color: black;
+  border: 1px solid black;
+  color: white;
+  cursor: pointer;
+}
+
+.buttonConnected {
+  text-transform: uppercase;
+  background-color: #000;
+  color: #FFF;
+  padding: 7.5px 15px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid white;
+  font-family: 'Roboto Mono', monospace;
+}
+
+.connectedCircle {
+  height: 10px;
+  width: 10px;
+  background-color: green;
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: 1px;
+}
+
+.walletButtonGrid {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+}
+
+.modalWrapper {
+  max-width: 400px;
+  background-color: white;
+  border: 5px solid black;
+  max-height: 80%;
+  overflow: auto;
+  padding: 40px;
+  margin: auto;
+  border-radius: 4px;
+  text-align: center;
+  cursor: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  
+  @media only screen and (max-width: 800px) {
+    width: 90%;
+  }
+}
+
+.getMetaMaskButton {
+  width: 100%;
+  padding: 20px 0px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 2px solid black;
+  background-color: white;
+  color: black;
+  margin-top: 10px;
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}
+
+.dismissButton {
+  width: 100%;
+  padding: 10px 0px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: underline;
+  cursor: pointer;
+  border: none;
+  background-color: white;
+  color: black;
+  margin-top: 10px;
+  @media only screen and (max-width: 600px) {
+    width: 100%;
+  }
+  &:hover {
+    background-color: black;
+    color: white;
+  }
+}
+
+.link {
+  color: orange;
+  font-weight: 600;
+}
+
+.metamask {
+  width: 30px;
+  height: 30px;
+}
+
+.text {
+  width: 100%;
+  text-align: center;
+}
+
+.helperText {
+  padding-top: 10px;
+  text-align: left;
+  font-weight: 400;
+}
+
+.header {
+  text-align: center;
+  width: 100%;
+  justify-content: end;
+}
+
+.textNotification {
+  font-family: "Roboto Mono";
+  font-size: 14px;
+}
