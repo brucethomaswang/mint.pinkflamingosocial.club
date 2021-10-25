@@ -37,23 +37,27 @@ function TransactionProvider({ children }: { children: ReactNode }): ReactElemen
   const [txQueue, setTxQueue] = useState<TransactionResponse[]>([])
   const [receiptQueue, setReceiptQueue] = useState<TransactionReceipt[]>([])
 
-  const waitForReceipt = async (txQueueItem: TransactionResponse) => {
-    const txReceipt: TransactionReceipt = {
-      hash: txQueueItem.hash,
-    }
-    try {
-      const receipt = await txQueueItem.wait()
-      console.log('receipt', receipt)
-      txReceipt.receipt = receipt
-    } catch (e) {
-      console.error('error', e)
-      //@ts-ignore
-      txReceipt.error = e.message
-    }
-    receiptQueue.push(txReceipt)
-    setReceiptQueue([...receiptQueue])
-    return txReceipt
-  }
+  const waitForReceipt = useCallback(
+    async (txQueueItem: TransactionResponse) => {
+      const txReceipt: TransactionReceipt = {
+        hash: txQueueItem.hash,
+      }
+      try {
+        const receipt = await txQueueItem.wait()
+        console.log('receipt', receipt)
+        txReceipt.receipt = receipt
+      } catch (e) {
+        console.error('error', e)
+        //@ts-ignore
+        txReceipt.error = e.message
+      }
+      receiptQueue.push(txReceipt)
+      setReceiptQueue([...receiptQueue])
+      return txReceipt
+    },
+
+    [receiptQueue],
+  )
 
   const pushTransaction = useCallback(
     (txResponse: TransactionResponse) => {
