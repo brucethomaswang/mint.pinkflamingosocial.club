@@ -7,11 +7,12 @@ import WalletButtonProvider from './providers/WalletButtonProvider'
 import config from './utils/appConfig'
 import Web3Provider from './providers/Web3Provider'
 import WalletButton from './components/wallet/WalletButton'
+import Home from './components/home/Home'
 
 function App() {
   return (
     <Providers>
-      <WalletButton />
+      <Home />
     </Providers>
   )
 }
