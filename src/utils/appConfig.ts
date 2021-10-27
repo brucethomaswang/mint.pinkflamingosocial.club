@@ -4,7 +4,7 @@ export const etherAddress = '0x0000000000000000000000000000000000000000' //ETH
 const configurations: { [env: string]: Configuration } = {
   development: {
     chainId: 4002,
-    contractAddress: '0xf2F53cEeaebC21259dF278fEb7896f0B9de52881',
+    contractAddress: '0xc6d93b4a4827ea28841ca9eca7a80cd5dc736598',
     defaultProvider: `https://rpc.testnet.fantom.network/`,
     etherscanUrl: 'https://testnet.ftmscan.com/',
     refreshInterval: 10000,

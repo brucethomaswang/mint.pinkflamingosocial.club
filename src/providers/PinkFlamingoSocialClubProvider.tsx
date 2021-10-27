@@ -38,9 +38,7 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
   const purchase = useCallback(async () => {
     if (!wallet || !account) return
     const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
-
-    const value = ethers.utils.parseEther('0.1')
-
+    const value = (await contract.tokenPriceInWei()).toString()
     const options = {
       value,
     }
