@@ -1,30 +1,34 @@
 .button {
   text-transform: uppercase;
-  background-color: black;
+  background-color: #0C0922;
   color: white;
   padding: 7.5px 15px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid white;
-  font-family: 'Roboto Mono', monospace;
+  border: 2px solid #EF8395;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .button:hover {
   background-color: black;
   border: 1px solid black;
-  color: white;
+  color:  #EF8395;
   cursor: pointer;
+  border: 2px solid #EF8395;
+  border-radius: 4px;
 }
 
 .buttonConnected {
   text-transform: uppercase;
-  background-color: #000;
-  color: #FFF;
+  background-color: #0C0922;
+  color: #EF8395;
   padding: 7.5px 15px;
   font-size: 12px;
   font-weight: 600;
-  border: 1px solid white;
-  font-family: 'Roboto Mono', monospace;
+  border: 2px solid #EF8395;
+  border-radius: 4px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .connectedCircle {
@@ -43,8 +47,9 @@
 
 .modalWrapper {
   max-width: 400px;
-  background-color: white;
-  border: 5px solid black;
+  background-color: #0C0922;
+  border: 2px solid #EF8395;
+
   max-height: 80%;
   overflow: auto;
   padding: 40px;
@@ -52,6 +57,7 @@
   border-radius: 4px;
   text-align: center;
   cursor: auto;
+
   position: fixed;
   top: 50%;
   left: 50%;
@@ -86,20 +92,22 @@
 .dismissButton {
   width: 100%;
   padding: 10px 0px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
-  text-decoration: underline;
   cursor: pointer;
-  border: none;
-  background-color: white;
-  color: black;
+
+  border: 2px solid #EF8395;
+  background-color: #0C0922;
+  color: #FFF;
   margin-top: 10px;
+  border-radius: 4px;
+
   @media only screen and (max-width: 600px) {
     width: 100%;
   }
   &:hover {
-    background-color: black;
+    background-color: #EF8395;
     color: white;
   }
 }
@@ -132,6 +140,8 @@
 }
 
 .textNotification {
-  font-family: "Roboto Mono";
+  font-family: 'Roboto', sans-serif;
   font-size: 14px;
+  color: #FFF;
+  margin-bottom: 20px;
 }

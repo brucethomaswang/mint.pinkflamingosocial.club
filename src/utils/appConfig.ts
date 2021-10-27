@@ -20,8 +20,8 @@ const configurations: { [env: string]: Configuration } = {
   },
 }
 
-export default configurations['production']
-// export default configurations['development']
+// export default configurations['production']
+export default configurations['development']
 
 export type Configuration = {
   chainId: number
