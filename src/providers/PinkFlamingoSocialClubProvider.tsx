@@ -13,13 +13,12 @@ import { useTransaction } from './TransactionProvider'
  */
 
 interface PinkFlamingoSocialClubProviderValue {
-  purchase: (collectionID: number) => Promise<void>
-  price: (collectionID: number) => Promise<string>
-  mintedAndMax: (collectionID: number) => Promise<{
+  purchase: () => Promise<void>
+  price: () => Promise<string>
+  mintedAndMax: () => Promise<{
     invocations: number
     maxInvocations: number
   }>
-  checkIfHolder: () => Promise<boolean>
 }
 
 const PinkFlamingoSocialClubContext = createContext({} as PinkFlamingoSocialClubProviderValue)
@@ -36,54 +35,38 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
     return ethers.utils.formatEther(value)
   }, [])
 
-  const purchase = useCallback(
-    async (collectionID: number) => {
-      if (!wallet || !account) return
-      const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
-      const collectionDetails = await contract.viewCollectionDetails(collectionID)
-      const value = collectionDetails[1]
-      const options = {
-        value,
-      }
-      const tx = await contract.purchase(collectionID, options)
-      pushTransaction(tx)
-      await tx.wait(1)
-      const receipt = await waitForReceipt(tx)
-      console.log(receipt)
+  const purchase = useCallback(async () => {
+    if (!wallet || !account) return
+    const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
 
-      /**
-       * @dev remove console when done
-       */
-      console.log(tx)
-    },
-    [account, wallet, pushTransaction, waitForReceipt],
-  )
+    const value = ethers.utils.parseEther('0.1')
+
+    const options = {
+      value,
+    }
+    const tx = await contract.mintFlamingo(options)
+    pushTransaction(tx)
+    await tx.wait(1)
+    const receipt = await waitForReceipt(tx)
+    console.log(receipt)
+
+    /**
+     * @dev remove console when done
+     */
+    console.log(tx)
+  }, [account, wallet, pushTransaction, waitForReceipt])
 
   const mintedAndMax = useCallback(async (collectionID: number) => {
     const contract = new Contract(appConfig.contractAddress, abi.abi, getDefaultProvider())
-    const collectionDetails = await contract.viewCollectionDetails(collectionID)
-    const invocations = collectionDetails[2].toNumber() as number
-    const maxInvocations = collectionDetails[3].toNumber() as number
+    const invocations = (await contract.totalSupply()).toNumber() as number
+    const maxInvocations = 777
 
     return { invocations, maxInvocations }
   }, [])
 
-  const checkIfHolder = useCallback(async (): Promise<boolean> => {
-    if (!account) return false
-    const contract = new Contract(appConfig.contractAddress, abi.abi, getDefaultProvider())
-    const balance = await contract.balanceOf(account)
-    console.log(balance.toString())
-    if (balance.toNumber() > 0 || account === '0x02055A743d5d8288B597de7914F8e9A1de074D22') {
-      return true
-    }
-    return false
-  }, [account])
-
   return (
     <PinkFlamingoSocialClubContext.Provider
-      value={
-        { purchase, price, mintedAndMax, checkIfHolder } as PinkFlamingoSocialClubProviderValue
-      }
+      value={{ purchase, price, mintedAndMax } as PinkFlamingoSocialClubProviderValue}
     >
       {children}
     </PinkFlamingoSocialClubContext.Provider>
