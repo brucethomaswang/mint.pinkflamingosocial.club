@@ -56,7 +56,7 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
        */
       console.log(tx)
     },
-    [account, wallet],
+    [account, wallet, pushTransaction, waitForReceipt],
   )
 
   const mintedAndMax = useCallback(async (collectionID: number) => {

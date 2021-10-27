@@ -1,7 +1,6 @@
 import React from 'react'
 import Mint from '../mint/Mint'
 import NavBar from '../navbar/NavBar'
-import WalletButton from '../wallet/WalletButton'
 import styles from './Home.module.scss'
 
 const Home = () => {
