@@ -30,7 +30,7 @@ export const Status = styled.div`
 export const Pending = styled(Status)`
   background-color: #0C0922;
   color: white;
-  border: 2px solid #0C0922;
+  border: 2px solid #EF8395;
   font-family: 'Roboto';
 `
 
@@ -65,8 +65,10 @@ export const InfoMessage = styled.div`
 export const CloseModalButton = styled.button`
   background-color: white;
   border: 0px;
-  height: 20px;
+  border-radius: 4px;
+  height: 30px;
   width: 20px;
+  margin-left: 5px;
   padding-left: 5px;
   color: #EF8395;
   font-weight: bold;
