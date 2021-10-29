@@ -16,7 +16,7 @@ const Mint = () => {
       <div className={styles.description}>
         The promised lands are burning, the great migration is underway. These new lands offer
         hope, prosperity and intoxicating indulgence for the traveling flamingo. On the volcanic
-        banks of the Great Pink Lake the genesis 777 Flamingos have built a grandiose club to
+        banks of the Great Pink Lake the <span className={styles.pink}>genesis 777 Flamingos</span> have built a grandiose club to
         house the elusive, the elite, the sinful and the sinister.
       </div>
       <MintProgress />

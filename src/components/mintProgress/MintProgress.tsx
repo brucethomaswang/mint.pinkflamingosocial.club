@@ -17,6 +17,7 @@ const MintProgress = () => {
 
   return (
     <div>
+      <div className={styles.subTitle}>Mint 50 FTM</div>
       <div className={styles.grid}>
         <div className={styles.firstItem}>{minted}</div>
         <div>777</div>

@@ -1,5 +1,5 @@
 import React from 'react'
-import flamingbo from '../../assets/pfsc_logo_black.svg'
+import flamingbo from '../../assets/Flamingo_Badge_PINK.svg'
 import styles from './Logo.module.scss'
 
 const Logo = () => {
