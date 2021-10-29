@@ -12,16 +12,16 @@ const configurations: { [env: string]: Configuration } = {
   },
   production: {
     chainId: 250,
-    contractAddress: '0xf2F53cEeaebC21259dF278fEb7896f0B9de52881',
+    contractAddress: '0xd761db316b5b9c9c51f7f80127497bc618e2b422',
     defaultProvider: `https://rpc.ftm.tools`,
-    etherscanUrl: 'https://ftmscan.com',
+    etherscanUrl: 'https://ftmscan.com/',
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
   },
 }
 
-//export default configurations['production']
-export default configurations['development']
+export default configurations['production']
+//export default configurations['development']
 
 export type Configuration = {
   chainId: number

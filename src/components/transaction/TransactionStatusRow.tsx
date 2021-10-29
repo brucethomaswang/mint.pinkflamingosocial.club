@@ -9,6 +9,7 @@ import {
   Success,
   Error,
 } from './TransactionStatusStyles'
+import appConfig from '../../utils/appConfig'
 
 interface TransactionStatusRowProps {
   txResponse: TransactionResponse
@@ -46,7 +47,7 @@ const TransactionStatusRow = ({ txResponse, txReceipt }: TransactionStatusRowPro
     <FloatingNotification>
       <Message>
         <a
-          href={`https://testnet.ftmscan.com/tx/${txResponse.hash}`}
+          href={`${appConfig.etherscanUrl}${txResponse.hash}`}
           target="_blank"
           rel="noopener noreferrer"
           className={styles.link}
