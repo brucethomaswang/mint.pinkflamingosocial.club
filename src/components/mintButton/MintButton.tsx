@@ -7,7 +7,7 @@ const MintButton = () => {
   const { account } = useWallet()
 
   if (!account) {
-    return <div></div>
+    return <></>
   }
 
   return (
