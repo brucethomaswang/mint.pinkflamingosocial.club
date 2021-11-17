@@ -69,7 +69,7 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
   const redeemFlamingo = useCallback(async () => {
     if (!wallet || !account) return
     const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
-    const tx = await contract.redeemFlamingo()
+    const tx = await contract.redeemFlamingo(account)
     pushTransaction(tx)
     const receipt = await waitForReceipt(tx)
     console.log(receipt)
