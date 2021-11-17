@@ -22,13 +22,18 @@
         },
         {
           "internalType": "uint256",
-          "name": "_maxMint",
+          "name": "_maxTokenId",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
           "name": "_tokenPriceInWei",
           "type": "uint256"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_minters",
+          "type": "address[]"
         }
       ],
       "stateMutability": "nonpayable",
@@ -281,6 +286,19 @@
     },
     {
       "inputs": [],
+      "name": "isEligableToRedeem",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "isElligable",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
       "name": "isMintPaused",
       "outputs": [
         {
@@ -293,8 +311,21 @@
       "type": "function"
     },
     {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "_minters",
+          "type": "address[]"
+        }
+      ],
+      "name": "loadMinters",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [],
-      "name": "maxMint",
+      "name": "maxTokenId",
       "outputs": [
         {
           "internalType": "uint256",
@@ -386,6 +417,25 @@
       "inputs": [],
       "name": "pauseMint",
       "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        }
+      ],
+      "name": "redeemFlamingo",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        }
+      ],
       "stateMutability": "nonpayable",
       "type": "function"
     },
@@ -517,25 +567,6 @@
           "internalType": "uint256",
           "name": "",
           "type": "uint256"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "uint256",
-          "name": "",
-          "type": "uint256"
-        }
-      ],
-      "name": "tokenIdToMinterAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "",
-          "type": "address"
         }
       ],
       "stateMutability": "view",
