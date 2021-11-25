@@ -1,4 +1,4 @@
-import MintButton from '../mintButton/MintButton'
+//import MintButton from '../mintButton/MintButton'
 import MintProgress from '../mintProgress/MintProgress'
 import styles from './Mint.module.scss'
 import ClubSign from '../../assets/pfsc_sign.svg'
