@@ -34,10 +34,17 @@ const Mint = () => {
         the secrets of the infamous Pink Flamingo Social Club.
       </div>
       <MintProgress />
-      <div className={styles.buttons}>
+      {/* <div className={styles.buttons}>
         <MintButton />
         {isEligible && <RedeemButton />}
-      </div>
+      </div> */}
+      {isEligible ? (
+        <RedeemButton />
+      ) : (
+        <div className={styles.description}>
+          Not eligible for redemption. Wait for public mint.
+        </div>
+      )}
     </div>
   )
 }
