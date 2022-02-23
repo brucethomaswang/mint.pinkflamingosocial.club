@@ -19,7 +19,7 @@ const WalletModal = () => {
         </div>
         <div className={styles.textNotification}>
           Please check that you are connected to the{' '}
-          {appConfig.chainId === 250 ? 'Fantom Main Net' : 'Fantom Test Net'} Network.
+          {appConfig.chainId === 43114 ? 'Avax Mainnet' : 'Avax Testnet'} Network.
         </div>
       </>
     )

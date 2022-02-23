@@ -14,11 +14,13 @@ import { useTransaction } from './TransactionProvider'
 
 interface PinkFlamingoSocialClubProviderValue {
   purchase: () => Promise<void>
+  redeemFlamingo: () => Promise<void>
   price: () => Promise<string>
   mintedAndMax: () => Promise<{
     invocations: number
     maxInvocations: number
   }>
+  checkIfEligibleForAirdrop: () => Promise<boolean | undefined>
 }
 
 const PinkFlamingoSocialClubContext = createContext({} as PinkFlamingoSocialClubProviderValue)
@@ -47,11 +49,6 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
     await tx.wait(1)
     const receipt = await waitForReceipt(tx)
     console.log(receipt)
-
-    /**
-     * @dev remove console when done
-     */
-    console.log(tx)
   }, [account, wallet, pushTransaction, waitForReceipt])
 
   const mintedAndMax = useCallback(async (collectionID: number) => {
@@ -62,9 +59,33 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
     return { invocations, maxInvocations }
   }, [])
 
+  const checkIfEligibleForAirdrop = useCallback(async () => {
+    if (!wallet || !account) return
+    const contract = new Contract(appConfig.contractAddress, abi.abi, getDefaultProvider())
+    const isEligible = (await contract.isEligableToRedeem(account)) as boolean
+    return isEligible
+  }, [wallet, account])
+
+  const redeemFlamingo = useCallback(async () => {
+    if (!wallet || !account) return
+    const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
+    const tx = await contract.redeemFlamingo(account)
+    pushTransaction(tx)
+    const receipt = await waitForReceipt(tx)
+    console.log(receipt)
+  }, [account, wallet, pushTransaction, waitForReceipt])
+
   return (
     <PinkFlamingoSocialClubContext.Provider
-      value={{ purchase, price, mintedAndMax } as PinkFlamingoSocialClubProviderValue}
+      value={
+        {
+          purchase,
+          redeemFlamingo,
+          price,
+          mintedAndMax,
+          checkIfEligibleForAirdrop,
+        } as PinkFlamingoSocialClubProviderValue
+      }
     >
       {children}
     </PinkFlamingoSocialClubContext.Provider>

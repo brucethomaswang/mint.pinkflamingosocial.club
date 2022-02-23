@@ -26,7 +26,8 @@ function WalletButtonProvider({ children }: { children: ReactNode }): ReactEleme
   const connectToChain = async () => {
     setIsLoading(true)
     setIsModalOpen(true)
-    const correctChainId = appConfig.chainId === 250 ? '0xfa' : `0x${Number(4002).toString(16)}`
+    const correctChainId =
+      appConfig.chainId === 43114 ? '0xa86a' : `0x${Number(4002).toString(16)}`
     const provider = (await detectEthereumProvider()) as any
     if (!provider) {
       setIsError(true)

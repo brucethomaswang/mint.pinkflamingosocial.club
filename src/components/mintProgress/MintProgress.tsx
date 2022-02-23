@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useFlamingo } from '../../providers/PinkFlamingoSocialClubProvider'
 import styles from './MintProgress.module.scss'
 
@@ -17,7 +17,7 @@ const MintProgress = () => {
 
   return (
     <div>
-      <div className={styles.subTitle}>Mint 50 FTM</div>
+      <div className={styles.subTitle}>Mint 1.5 AVAX</div>
       <div className={styles.grid}>
         <div className={styles.firstItem}>{minted}</div>
         <div>777</div>
