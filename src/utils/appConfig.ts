@@ -1,4 +1,4 @@
-export const nodeUri = process.env.NODE_URI || 'http://localhost:7545'
+export const nodeUri = import.meta.env.NODE_URI || 'http://localhost:7545'
 export const etherAddress = '0x0000000000000000000000000000000000000000' //ETH
 
 const configurations: { [env: string]: Configuration } = {
@@ -8,7 +8,7 @@ const configurations: { [env: string]: Configuration } = {
     defaultProvider: `https://rpc.testnet.fantom.network/`,
     etherscanUrl: 'https://testnet.ftmscan.com/',
     refreshInterval: 10000,
-    gasLimitMultiplier: 1.1,
+    gasLimitMultiplier: 1.1
   },
   production: {
     chainId: 43114,
@@ -16,8 +16,8 @@ const configurations: { [env: string]: Configuration } = {
     defaultProvider: `https://api.avax.network/ext/bc/C/rpc`,
     etherscanUrl: 'https://snowtrace.io/',
     refreshInterval: 10000,
-    gasLimitMultiplier: 1.1,
-  },
+    gasLimitMultiplier: 1.1
+  }
 }
 
 export default configurations['production']
@@ -49,5 +49,5 @@ export const defaultEthereumConfig = {
   defaultConfirmations: 1,
   defaultGas: '6000000',
   defaultGasPrice: '1000000000000',
-  ethereumNodeTimeout: 10000,
+  ethereumNodeTimeout: 10000
 }

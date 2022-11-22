@@ -1,53 +1,32 @@
 {
-  "name": "front-end-flamingos",
+  "name": "mint.pinkflamingosocial.club",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@metamask/detect-provider": "^1.2.0",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "@types/jest": "^26.0.15",
-    "@types/node": "^12.0.0",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/sass": "^1.16.1",
-    "@types/styled-components": "^5.1.15",
-    "ethers": "^5.5.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "react-spinners": "^0.11.0",
-    "sass": "^1.43.3",
-    "styled-components": "^5.3.3",
-    "typescript": "^4.1.2",
-    "use-wallet": "^0.8.0",
-    "web-vitals": "^1.0.1",
-    "web3": "^1.6.0"
+    "@metamask/detect-provider": "^2.0.0",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@types/sass": "^1.43.1",
+    "@types/styled-components": "^5.1.26",
+    "ethers": "^5.7.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-spinners": "^0.13.6",
+    "sass": "^1.56.1",
+    "styled-components": "^5.3.6",
+    "typescript": "^4.9.3",
+    "use-wallet": "^0.13.6",
+    "web3": "^1.8.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^2.2.0",
+    "vite": "^3.2.4",
+    "vite-plugin-svgr": "^2.2.2"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "format": "prettier --write \"**/*.+(js|jsx|ts|tsx|json|css|scss|sass|md)\""
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "start": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview"
   }
 }
