@@ -1,4 +1,3 @@
-export const nodeUri = import.meta.env.NODE_URI || 'http://localhost:7545' // TODO: ??
 export const etherAddress = '0x0000000000000000000000000000000000000000' // TODO: ??
 export const contractAddress = import.meta.env.VITE_APP_CONTRACT_ADDRESS
 export const defaultProvider = import.meta.env.VITE_APP_RPC_PROVIDER

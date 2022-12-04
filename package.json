@@ -26,7 +26,8 @@
     "vite-plugin-svgr": "^2.2.2"
   },
   "scripts": {
-    "start": "vite",
+    "start": "npx http-server ./dist",
+    "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview"
   }

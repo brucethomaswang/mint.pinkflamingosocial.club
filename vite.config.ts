@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import reactRefresh from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
 import path from 'path'
 
@@ -14,7 +14,7 @@ export default defineConfig({
     }
   },
   plugins: [
-    reactRefresh(),
+    react(),
     svgrPlugin({
       svgrOptions: {
         icon: true
