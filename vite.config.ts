@@ -4,6 +4,15 @@ import svgrPlugin from 'vite-plugin-svgr'
 import path from 'path'
 
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @import "./src/index.scss";
+        `
+      }
+    }
+  },
   plugins: [
     reactRefresh(),
     svgrPlugin({
