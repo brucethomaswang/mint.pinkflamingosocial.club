@@ -1,8 +1,6 @@
 import { FC, Fragment, useEffect, useState } from 'react'
 import { useMetaMask } from 'metamask-react'
 import ClipLoader from 'react-spinners/ClipLoader'
-import { ethers, providers } from 'ethers'
-import Web3 from 'web3'
 
 import styles from './header.module.scss'
 import config from 'config'
