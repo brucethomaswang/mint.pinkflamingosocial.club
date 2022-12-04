@@ -1,7 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { useEffect } from 'react'
 
-import { PinkFlamingoSocialClub } from 'services'
+import { PinkFlamingoSocialClub } from 'services/index'
 import { Minter } from 'services/PinkFlamingoSocialClub'
 
 export default function useMinter(address: string | null) {

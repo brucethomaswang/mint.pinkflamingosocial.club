@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 
-import { PinkFlamingoSocialClub, MerkleTree } from 'services'
+import { PinkFlamingoSocialClub, MerkleTree } from 'services/index'
 import { listener } from 'services/PinkFlamingoSocialClub'
 
 export default function useWhitelist(address?: string | null) {

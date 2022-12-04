@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useRef } from 'react'
 
-import { PinkFlamingoSocialClub } from 'services'
+import { PinkFlamingoSocialClub } from 'services/index'
 import useLocalStorage from 'hooks/useLocalStorage'
 
 export default function useMinter() {

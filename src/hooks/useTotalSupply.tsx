@@ -1,6 +1,6 @@
 import { useMemo, useRef, useEffect } from 'react'
 
-import { PinkFlamingoSocialClub } from 'services'
+import { PinkFlamingoSocialClub } from 'services/index'
 import { listener } from 'services/PinkFlamingoSocialClub'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { MINT_LEN } from 'config'

@@ -3,7 +3,7 @@ import { useWallet } from 'use-wallet'
 
 import Banner from 'assets/LETTER.png'
 import { MINT_LEN } from 'config'
-import { PinkFlamingoSocialClub } from 'services'
+import { PinkFlamingoSocialClub } from 'services/index'
 import { useFlamingo } from 'providers/PinkFlamingoSocialClubProvider'
 import { useWeb3 } from 'providers/Web3Provider'
 import styles from './mint.module.scss'
