@@ -6,7 +6,7 @@ import { MINT_LEN } from 'config'
 import { PinkFlamingoSocialClub } from 'services'
 import { useFlamingo } from 'providers/PinkFlamingoSocialClubProvider'
 import { useWeb3 } from 'providers/Web3Provider'
-import styles from 'components/Mint/mint.module.scss'
+import styles from './mint.module.scss'
 
 const Mint: FC = () => {
   const { account } = useWallet()

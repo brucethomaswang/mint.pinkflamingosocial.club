@@ -1,6 +1,6 @@
 import { FC } from 'react'
-import Mint from 'components/mint'
-import Header from 'components/header'
+import Mint from '../../components/mint'
+import Header from '../../components/header'
 
 import styles from './home.module.scss'
 
