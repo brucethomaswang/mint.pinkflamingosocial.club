@@ -11,10 +11,17 @@ const whitelist = [
 ]
 
 // TODO: best way to include whitelist array
-const leaves = whitelist.map((addr) => keccak256(addr))
+let leaves
+let tree: MerkleTree
+let root
 
-export const tree = new MerkleTree(leaves, keccak256, { sortPairs: true })
-export const root = tree.getHexRoot()
+try {
+  leaves = whitelist.map((addr) => keccak256(addr))
+  tree = new MerkleTree(leaves, keccak256, { sortPairs: true })
+  root = tree.getHexRoot()
+} catch (err) {
+  console.error('Error using merkletree')
+}
 
 export const functions = {
   isWhitelisted: (address: string) => whitelist.includes(address),
