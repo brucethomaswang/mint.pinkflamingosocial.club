@@ -28,6 +28,6 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "serve": "vite preview --host"
+    "serve": "vite preview --host --post $PORT"
   }
 }
