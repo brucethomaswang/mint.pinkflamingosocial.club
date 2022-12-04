@@ -1,5 +1,5 @@
 import { ReactNode, ReactElement, useEffect, useState, useContext, createContext } from 'react'
-import { useWallet } from 'use-wallet'
+import { useMetaMask } from 'metamask-react'
 
 import { Wallet } from 'utils/Wallet'
 import config from 'config'
@@ -11,7 +11,7 @@ interface Web3ProviderValue {
 const Web3Context = createContext({} as Web3ProviderValue)
 
 function Web3Provider({ children }: { children: ReactNode }): ReactElement {
-  const { ethereum, account } = useWallet()
+  const { account, ethereum } = useMetaMask()
   const [wallet, setWallet] = useState<Wallet>()
 
   useEffect(() => {

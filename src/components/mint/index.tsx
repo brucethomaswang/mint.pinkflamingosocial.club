@@ -1,5 +1,5 @@
 import { FC, Fragment, useState } from 'react'
-import { useWallet } from 'use-wallet'
+import { useMetamask } from 'use-metamask'
 
 import Banner from 'assets/LETTER.png'
 import { MINT_LEN } from 'config'
@@ -9,7 +9,7 @@ import { useWeb3 } from 'providers/Web3Provider'
 import styles from './mint.module.scss'
 
 const Mint: FC = () => {
-  const { account } = useWallet()
+  const { metaState } = useMetamask()
   const { isWhitelistOnly, isPaused, isConcluded } = useFlamingo()
   return (
     <div className={styles.wrapper}>
@@ -24,7 +24,7 @@ const Mint: FC = () => {
           <p className={styles.perspective}>Minting is {isConcluded ? 'Finished' : 'Paused'}</p>
         ) : (
           <Fragment>
-            {account ? (
+            {metaState.account ? (
               <Fragment>{isWhitelistOnly ? <WhitelistMint /> : <PublicMintButton />}</Fragment>
             ) : (
               <p className={styles.perspective}>Please connect</p>

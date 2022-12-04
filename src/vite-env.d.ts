@@ -11,3 +11,11 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv
 }
+
+import { Web3Provider } from '@ethersproject/providers'
+
+declare global {
+  interface Window {
+    ethereum?: Web3Provider
+  }
+}

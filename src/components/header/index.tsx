@@ -1,6 +1,8 @@
 import { FC, Fragment, useEffect, useState } from 'react'
-import { useWallet } from 'use-wallet'
+import { useMetaMask } from 'metamask-react'
 import ClipLoader from 'react-spinners/ClipLoader'
+import { ethers, providers } from 'ethers'
+import Web3 from 'web3'
 
 import styles from './header.module.scss'
 import config from 'config'
@@ -26,7 +28,7 @@ const Header: FC = () => {
 }
 
 const Connect = () => {
-  const wallet = useWallet()
+  const { connect, account, status } = useMetaMask()
   const [alreadyConnected, setAlreadyConnected] = useLocalStorage<boolean>('alreadyConnected', false)
   const [chainId, setChainId] = useState<string | null>()
   const [provider, setProvider] = useState<any>()
@@ -40,14 +42,14 @@ const Connect = () => {
     detectProvider()
   }, [])
 
-  const connect = async () => {
+  const connected = async () => {
     setDialogOpen(true)
     setDialogState(WalletState.Loading)
     if (provider) {
       if (provider.chainId !== `0x${config.chainId}`) {
         setDialogState(WalletState.WrongChain)
       } else {
-        await wallet.connect()
+        await connect()
         setAlreadyConnected(true)
         setDialogOpen(false)
       }
@@ -62,16 +64,16 @@ const Connect = () => {
 
   useEffect(() => {
     if (provider && alreadyConnected) {
-      connect()
+      connected()
     }
   }, [alreadyConnected, provider, chainId])
 
   return (
     <Fragment>
-      {wallet.account ? (
-        <button className={styles.buttonConnected}>{wallet.status}</button>
+      {account ? (
+        <button className={styles.buttonConnected}>{status}</button>
       ) : (
-        <button className={styles.button} onClick={async () => await connect()}>
+        <button className={styles.button} onClick={async () => await connected()}>
           Connect
         </button>
       )}
