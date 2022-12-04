@@ -16,17 +16,17 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "baseUrl": "./src",
+    "baseUrl": ".",
     "paths": {
-      "abi/*": ["abi/*"],
-      "assets/*": ["assets/*"],
-      "components/*": ["components/*"],
-      "services/*": ["services/*"],
-      "providers/*": ["providers/*"],
-      "pages/*": ["pages/*"],
-      "hooks/*": ["hooks/*"],
-      "utils/*": ["utils/*"],
-      "config": ["config.ts"]
+      "abi/*": ["src/abi/*"],
+      "assets/*": ["src/assets/*"],
+      "components/*": ["src/components/*"],
+      "services/*": ["src/services/*"],
+      "providers/*": ["src/providers/*"],
+      "pages/*": ["src/pages/*"],
+      "hooks/*": ["src/hooks/*"],
+      "utils/*": ["src/utils/*"],
+      "config": ["src/config.ts"]
   },
   },
   "include": ["src"]
