@@ -2,7 +2,7 @@ import { FC, Fragment, useEffect, useState } from 'react'
 import { useWallet } from 'use-wallet'
 import ClipLoader from 'react-spinners/ClipLoader'
 
-import styles from './header.module.scss'
+import styles from 'components/Header/header.module.scss'
 import config from 'config'
 import detectEthereumProvider from '@metamask/detect-provider'
 import Flamingo from 'assets/badge.svg'
