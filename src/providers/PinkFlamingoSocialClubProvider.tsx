@@ -1,5 +1,5 @@
 import { createContext, ReactElement, ReactNode, useContext, useMemo } from 'react'
-import { useMetamask } from 'use-metamask'
+import { useMetaMask } from 'metamask-react'
 
 import { Minter } from 'services/PinkFlamingoSocialClub'
 
@@ -28,9 +28,9 @@ interface IPinkFlamingoSocialClub {
 const PinkFlamingoSocialClubContext = createContext<IPinkFlamingoSocialClub>({} as IPinkFlamingoSocialClub)
 
 function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): ReactElement {
-  const { metaState } = useMetamask()
-  const { isWhitelistOnly, whitelistProof, isWhitelisted } = useWhitelist(metaState.account[0])
-  const { minter } = useMinter(metaState.account[0])
+  const { account } = useMetaMask()
+  const { isWhitelistOnly, whitelistProof, isWhitelisted } = useWhitelist(account)
+  const { minter } = useMinter(account)
   const { publicMintLimit, whitelistMintLimit } = useMintLimits()
   const { publicPrice, whitelistPrice } = useMintPrice()
   const { isPaused } = usePaused()
