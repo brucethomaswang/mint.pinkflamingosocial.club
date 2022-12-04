@@ -1,99 +1,78 @@
-import { createContext, ReactElement, ReactNode, useCallback, useContext } from 'react'
-
-import { Contract, ethers } from 'ethers'
-import appConfig from '../utils/appConfig'
-import { useWeb3 } from './Web3Provider'
-import abi from '../abi/PinkFlamingoSocialClub.json'
+import { createContext, PropsWithChildren, ReactElement, ReactNode, useContext, FC, useMemo } from 'react'
 import { useWallet } from 'use-wallet'
-import { getDefaultProvider } from '../utils/Wallet/provider'
-import { useTransaction } from './TransactionProvider'
 
-/**
- * @dev API module for TSM contracts
- */
+import { Minter } from 'services/PinkFlamingoSocialClub'
 
-interface PinkFlamingoSocialClubProviderValue {
-  purchase: () => Promise<void>
-  redeemFlamingo: () => Promise<void>
-  price: () => Promise<string>
-  mintedAndMax: () => Promise<{
-    invocations: number
-    maxInvocations: number
-  }>
-  checkIfEligibleForAirdrop: () => Promise<boolean | undefined>
+import useWhitelist from 'hooks/useWhitelist'
+import useMintPrice from 'hooks/useMintPrice'
+import useMintLimits from 'hooks/useMintLimits'
+import useTotalSupply from 'hooks/useTotalSupply'
+import useMinter from 'hooks/useMinter'
+import usePaused from 'hooks/usePaused'
+
+interface IPinkFlamingoSocialClub {
+  minter: Minter | null
+  isPaused: boolean
+  isConcluded: boolean
+  isWhitelisted: boolean
+  isWhitelistOnly: boolean
+  whitelistProof: string[]
+  publicMintLimit: number
+  whitelistMintLimit: number
+  publicPrice: string
+  whitelistPrice: string
+  totalSupply: number
+  availableSupply: number
 }
 
-const PinkFlamingoSocialClubContext = createContext({} as PinkFlamingoSocialClubProviderValue)
+const PinkFlamingoSocialClubContext = createContext<IPinkFlamingoSocialClub>({} as IPinkFlamingoSocialClub)
 
 function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): ReactElement {
-  const { wallet } = useWeb3()
   const { account } = useWallet()
-  const { pushTransaction, waitForReceipt } = useTransaction()
+  const { isWhitelistOnly, whitelistProof, isWhitelisted } = useWhitelist(account)
+  const { minter } = useMinter(account)
+  const { publicMintLimit, whitelistMintLimit } = useMintLimits()
+  const { publicPrice, whitelistPrice } = useMintPrice()
+  const { isPaused } = usePaused()
+  const { totalSupply, isConcluded, availableSupply } = useTotalSupply()
 
-  const price = useCallback(async (collectionID: number) => {
-    const contract = new Contract(appConfig.contractAddress, abi.abi, getDefaultProvider())
-    const collectionDetails = await contract.viewCollectionDetails(collectionID)
-    const value = collectionDetails[1]
-    return ethers.utils.formatEther(value)
-  }, [])
-
-  const purchase = useCallback(async () => {
-    if (!wallet || !account) return
-    const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
-    const value = (await contract.tokenPriceInWei()).toString()
-    const options = {
-      value,
-    }
-    const tx = await contract.mintFlamingo(options)
-    pushTransaction(tx)
-    await tx.wait(1)
-    const receipt = await waitForReceipt(tx)
-    console.log(receipt)
-  }, [account, wallet, pushTransaction, waitForReceipt])
-
-  const mintedAndMax = useCallback(async (collectionID: number) => {
-    const contract = new Contract(appConfig.contractAddress, abi.abi, getDefaultProvider())
-    const invocations = (await contract.totalSupply()).toNumber() as number
-    const maxInvocations = 777
-
-    return { invocations, maxInvocations }
-  }, [])
-
-  const checkIfEligibleForAirdrop = useCallback(async () => {
-    if (!wallet || !account) return
-    const contract = new Contract(appConfig.contractAddress, abi.abi, getDefaultProvider())
-    const isEligible = (await contract.isEligableToRedeem(account)) as boolean
-    return isEligible
-  }, [wallet, account])
-
-  const redeemFlamingo = useCallback(async () => {
-    if (!wallet || !account) return
-    const contract = new Contract(appConfig.contractAddress, abi.abi, wallet.signer)
-    const tx = await contract.redeemFlamingo(account)
-    pushTransaction(tx)
-    const receipt = await waitForReceipt(tx)
-    console.log(receipt)
-  }, [account, wallet, pushTransaction, waitForReceipt])
+  const memodFlamingo = useMemo(
+    () => ({
+      minter,
+      isPaused,
+      isConcluded,
+      isWhitelisted,
+      isWhitelistOnly,
+      whitelistProof,
+      publicMintLimit,
+      whitelistMintLimit,
+      publicPrice,
+      whitelistPrice,
+      totalSupply,
+      availableSupply
+    }),
+    [
+      minter,
+      isPaused,
+      isConcluded,
+      isWhitelisted,
+      isWhitelistOnly,
+      whitelistProof,
+      publicMintLimit,
+      whitelistMintLimit,
+      publicPrice,
+      whitelistPrice,
+      totalSupply,
+      availableSupply
+    ]
+  )
 
   return (
-    <PinkFlamingoSocialClubContext.Provider
-      value={
-        {
-          purchase,
-          redeemFlamingo,
-          price,
-          mintedAndMax,
-          checkIfEligibleForAirdrop,
-        } as PinkFlamingoSocialClubProviderValue
-      }
-    >
-      {children}
-    </PinkFlamingoSocialClubContext.Provider>
+    <PinkFlamingoSocialClubContext.Provider value={memodFlamingo}>{children}</PinkFlamingoSocialClubContext.Provider>
   )
 }
 
-const useFlamingo = (): PinkFlamingoSocialClubProviderValue =>
-  useContext(PinkFlamingoSocialClubContext)
+const useFlamingo = (): IPinkFlamingoSocialClub => useContext(PinkFlamingoSocialClubContext)
 
 export { PinkFlamingoSocialClubProvider, useFlamingo, PinkFlamingoSocialClubContext }
 export default PinkFlamingoSocialClubProvider

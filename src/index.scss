@@ -1,0 +1,51 @@
+$screen-sm-min: 576px;
+$screen-md-min: 768px;
+$screen-lg-min: 992px;
+$screen-xl-min: 1200px;
+$screen-xxl-min: 2000px;
+
+
+
+@mixin sm {
+    @media (min-width: #{$screen-sm-min}) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media (min-width: #{$screen-md-min}) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (min-width: #{$screen-lg-min}) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+@mixin xxl {
+    @media (min-width: #{$screen-xl-min}) {
+        @content;
+    }
+}
+
+@font-face {
+    font-family: "GothamMedium";
+    src: local("GothamMedium"),
+     url("./fonts/GothamMedium.ttf") format("truetype");
+    font-weight: medium;
+}
+
+@font-face {
+    font-family: "Heavitas";
+    src: local("Heavitas"),
+     url("./fonts/Heavitas.ttf") format("truetype");
+    font-weight: medium;
+}

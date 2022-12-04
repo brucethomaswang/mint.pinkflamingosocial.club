@@ -1,8 +1,8 @@
-import { ReactNode, ReactElement, useEffect, useState, useContext } from 'react'
-import { createContext } from 'react'
+import { ReactNode, ReactElement, useEffect, useState, useContext, createContext } from 'react'
 import { useWallet } from 'use-wallet'
-import { Wallet } from '../utils/Wallet/Wallet'
-import config from '../utils/appConfig'
+
+import { Wallet } from 'utils/Wallet'
+import config from 'config'
 
 interface Web3ProviderValue {
   wallet: Wallet
@@ -26,11 +26,7 @@ function Web3Provider({ children }: { children: ReactNode }): ReactElement {
     }
   }, [account, ethereum, wallet])
 
-  return (
-    <Web3Context.Provider value={{ wallet } as Web3ProviderValue}>
-      {children}
-    </Web3Context.Provider>
-  )
+  return <Web3Context.Provider value={{ wallet } as Web3ProviderValue}>{children}</Web3Context.Provider>
 }
 
 const useWeb3 = (): Web3ProviderValue => useContext(Web3Context)
