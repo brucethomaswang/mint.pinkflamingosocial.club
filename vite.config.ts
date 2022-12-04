@@ -23,15 +23,15 @@ export default defineConfig({
   ],
   resolve: {
     alias: {
-      abi: path.resolve(__dirname, 'src/abi'),
-      assets: path.resolve(__dirname, 'src/assets'),
-      components: path.resolve(__dirname, 'src/components'),
-      pages: path.resolve(__dirname, 'src/pages'),
-      hooks: path.resolve(__dirname, 'src/hooks'),
-      services: path.resolve(__dirname, 'src/services'),
-      providers: path.resolve(__dirname, 'src/providers'),
-      utils: path.resolve(__dirname, 'src/utils'),
-      config: path.resolve(__dirname, 'src/config.ts')
+      abi: path.resolve(__dirname, './src/abi'),
+      assets: path.resolve(__dirname, './src/assets'),
+      components: path.resolve(__dirname, './src/components'),
+      pages: path.resolve(__dirname, './src/pages'),
+      hooks: path.resolve(__dirname, './src/hooks'),
+      services: path.resolve(__dirname, './src/services'),
+      providers: path.resolve(__dirname, './src/providers'),
+      utils: path.resolve(__dirname, './src/utils'),
+      config: path.resolve(__dirname, './src/config.ts')
     }
   }
 })
