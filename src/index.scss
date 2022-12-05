@@ -31,7 +31,7 @@ $screen-xxl-min: 2000px;
 }
 
 @mixin xxl {
-    @media (min-width: #{$screen-xl-min}) {
+    @media (min-width: #{$screen-xxl-min}) {
         @content;
     }
 }
