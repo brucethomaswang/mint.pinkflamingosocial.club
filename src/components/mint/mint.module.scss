@@ -175,18 +175,15 @@
 
   .error {
     position: relative;
+    margin-top: 35px;
     text-align: center;
   }
 }
 
-.perspective {
-  @include md {
-    transform: 
-    perspective(500px)
-    rotateX(10deg)
-    rotateY(11deg)
-    rotateZ(-4deg)
-    translateX(-20px)
-  }
-
+.toast {
+  font-family: 'Roboto';
+  color: #FFF;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
