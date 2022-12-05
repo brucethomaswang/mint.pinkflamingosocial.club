@@ -13,8 +13,8 @@ export default function useMintPrice() {
       return
     }
     async function getPrices() {
-      setWhitelistPrice(await PinkFlamingoSocialClub.publicPriceInEth())
-      setPublicPrice(await PinkFlamingoSocialClub.whitelistPriceInEth())
+      setWhitelistPrice(await PinkFlamingoSocialClub.whitelistPriceInEth())
+      setPublicPrice(await PinkFlamingoSocialClub.publicPriceInEth())
       called.current = true
     }
     getPrices()
