@@ -1,37 +1,21 @@
-import React from 'react'
-import { UseWalletProvider } from 'use-wallet'
-import InfoMessageProvider from './providers/InfoMessageProvider'
-import PinkFlamingoSocialClubProvider from './providers/PinkFlamingoSocialClubProvider'
-import TransactionProvider from './providers/TransactionProvider'
-import WalletButtonProvider from './providers/WalletButtonProvider'
-import config from './utils/appConfig'
-import Web3Provider from './providers/Web3Provider'
-import Home from './components/home/Home'
-import TransactionStatus from './components/transaction/TransactionStatus'
+import { FC } from 'react'
+// import { UseWalletProvider } from 'use-wallet'
 
-function App() {
-  return (
-    <Providers>
-      <TransactionStatus />
-      <Home />
-    </Providers>
-  )
-}
+import config from 'config'
+import { MetaMaskProvider } from 'metamask-react'
+import Home from 'pages/home'
+import Web3Provider from 'providers/Web3Provider'
+import PinkFlamingoSocialClubProvider from 'providers/PinkFlamingoSocialClubProvider'
 
-const Providers: React.FC = ({ children }) => {
+const App: FC = () => {
   return (
-    <UseWalletProvider chainId={config.chainId}>
+    <MetaMaskProvider>
       <Web3Provider>
-        <TransactionProvider>
-          <InfoMessageProvider>
-            <PinkFlamingoSocialClubProvider>
-              <WalletButtonProvider>{children}</WalletButtonProvider>
-            </PinkFlamingoSocialClubProvider>
-          </InfoMessageProvider>
-        </TransactionProvider>
+        <PinkFlamingoSocialClubProvider>
+          <Home />
+        </PinkFlamingoSocialClubProvider>
       </Web3Provider>
-    </UseWalletProvider>
+    </MetaMaskProvider>
   )
 }
-
 export default App

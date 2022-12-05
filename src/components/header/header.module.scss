@@ -1,0 +1,38 @@
+.navbar {
+    z-index: 200;
+    height: 50px;
+    background-color: none;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+
+    .logo {
+        width: 40px;
+    }
+    
+    button {
+        text-transform: uppercase;
+        background-color: #0C0922;
+        color: white;
+        padding: 7.5px 15px;
+        font-size: 12px;
+        font-weight: 600;
+        border: 2px solid #EF8395;
+        border-radius: 4px;
+        font-family: 'Roboto', sans-serif;
+
+        &:hover:not(.connected) {
+            background-color: black;
+            color:  #EF8395;
+            cursor: pointer;
+        }
+    }
+
+    .connected {
+        color: #EF8395;
+    }
+}
+
+

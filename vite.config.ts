@@ -1,21 +1,29 @@
 import { defineConfig } from 'vite'
-import reactRefresh from '@vitejs/plugin-react'
+import react from '@vitejs/plugin-react'
 import svgrPlugin from 'vite-plugin-svgr'
+import path from 'path'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  // This changes the out put dir from dist to build
-  // comment this out if that isn't relevant for your project
-  build: {
-    outDir: 'build'
-  },
   plugins: [
-    reactRefresh(),
+    react(),
     svgrPlugin({
       svgrOptions: {
         icon: true
-        // ...svgr options (https://react-svgr.com/docs/options/)
       }
     })
-  ]
+  ],
+  resolve: {
+    alias: {
+      abi: path.resolve(__dirname, './src/abi'),
+      assets: path.resolve(__dirname, './src/assets'),
+      components: path.resolve(__dirname, './src/components'),
+      pages: path.resolve(__dirname, './src/pages'),
+      hooks: path.resolve(__dirname, './src/hooks'),
+      services: path.resolve(__dirname, './src/services'),
+      providers: path.resolve(__dirname, './src/providers'),
+      utils: path.resolve(__dirname, './src/utils'),
+      config: path.resolve(__dirname, './src/config.ts'),
+      whitelist: path.resolve(__dirname, './src/whitelist')
+    }
+  }
 })

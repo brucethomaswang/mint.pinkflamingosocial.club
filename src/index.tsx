@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
-import './fonts/Gotham/GothamMedium.ttf'
-import './index.css'
+
+import './fonts/GothamMedium.ttf'
+import './fonts/Heavitas.ttf'
+import './index.scss'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

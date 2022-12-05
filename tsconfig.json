@@ -15,7 +15,20 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "abi/*": ["src/abi/*"],
+      "assets/*": ["src/assets/*"],
+      "components/*": ["src/components/*"],
+      "services/*": ["src/services/*"],
+      "providers/*": ["src/providers/*"],
+      "pages/*": ["src/pages/*"],
+      "hooks/*": ["src/hooks/*"],
+      "utils/*": ["src/utils/*"],
+      "whitelist/*": ["src/whitelist/*"],
+      "config": ["src/config.ts"]
+  },
   },
   "include": ["src"]
 }
