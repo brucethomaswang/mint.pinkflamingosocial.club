@@ -20,17 +20,19 @@ const Mint: FC = () => {
         <MintProgress />
       </div>
       <div className={styles.bottom}>
-        {isPaused || isConcluded ? (
-          <p className={styles.perspective}>Minting is {isConcluded ? 'Finished' : 'Paused'}</p>
-        ) : (
-          <div className={styles.cta}>
-            {account ? (
-              <Fragment>{isWhitelistOnly ? <WhitelistMint /> : <PublicMintButton />}</Fragment>
-            ) : (
-              <p className={styles.perspective}>Please connect</p>
-            )}
-          </div>
-        )}
+        <div className={isPaused || isConcluded ? styles.notice : ''}>
+          {isPaused || isConcluded ? (
+            <p>Minting is {isConcluded ? 'Finished' : 'Paused'}</p>
+          ) : (
+            <Fragment>
+              {account ? (
+                <Fragment>{isWhitelistOnly ? <WhitelistMint /> : <PublicMintButton />}</Fragment>
+              ) : (
+                <p>Please Connect</p>
+              )}
+            </Fragment>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -45,7 +47,9 @@ const WhitelistMint: FC = () => {
           <WhitelistMintButton />
         </Fragment>
       ) : (
-        <p>Not eligible for whitelist. Wait for public mint.</p>
+        <Fragment>
+          <p>Not eligible for Whitelist</p>
+        </Fragment>
       )}
     </Fragment>
   )
@@ -90,7 +94,7 @@ const WhitelistMintButton: FC = () => {
 
 const MintProgress: FC = () => {
   // TODO: maybe notifcation on completion
-  const { totalSupply } = useFlamingo()
+  const { totalSupply, publicPrice, isWhitelistOnly, whitelistPrice } = useFlamingo()
   return (
     <Fragment>
       <div className={styles.progress}>
@@ -99,6 +103,9 @@ const MintProgress: FC = () => {
           <span>/</span>
         </div>
         <div>{MINT_LEN}</div>
+      </div>
+      <div className={styles.price}>
+        {isWhitelistOnly ? <p>Whitelist {whitelistPrice} ETH</p> : <p>Public {publicPrice} ETH</p>}
       </div>
     </Fragment>
   )
@@ -120,9 +127,7 @@ const MintSubmit: FC<IMintSubmit> = ({ mint, max }) => {
     if (max && quantity + 1 <= Math.min(...[availableSupply, max])) {
       setQuanity(quantity + 1)
     } else {
-      // TODO: error message
       setError(true)
-      console.log('unable to mint more than requested!')
     }
   }
 
