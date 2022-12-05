@@ -1,12 +1,14 @@
 [
   {
     "inputs": [
+      { "internalType": "uint16", "name": "_premint", "type": "uint16" },
       { "internalType": "uint16", "name": "_nextTokenId", "type": "uint16" },
       { "internalType": "uint16", "name": "_mintLength", "type": "uint16" },
       { "internalType": "uint256", "name": "_whitelistPriceInWei", "type": "uint256" },
       { "internalType": "uint256", "name": "_publicPriceInWei", "type": "uint256" },
       { "internalType": "string", "name": "_baseUri", "type": "string" },
       { "internalType": "string", "name": "_contractUri", "type": "string" },
+      { "internalType": "bytes32", "name": "_merkleRoot", "type": "bytes32" },
       { "internalType": "address", "name": "_router", "type": "address" }
     ],
     "stateMutability": "nonpayable",
@@ -79,6 +81,12 @@
     "anonymous": false,
     "inputs": [{ "indexed": false, "internalType": "address", "name": "account", "type": "address" }],
     "name": "Unpaused",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{ "indexed": false, "internalType": "bool", "name": "on", "type": "bool" }],
+    "name": "Whitelist",
     "type": "event"
   },
   {
