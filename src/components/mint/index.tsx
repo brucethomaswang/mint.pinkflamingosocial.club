@@ -60,7 +60,6 @@ const WhitelistMint: FC = () => {
 }
 
 const MintProgress: FC = () => {
-  // TODO: maybe notifcation on completion
   const { totalSupply, publicPrice, isWhitelistOnly, whitelistPrice } = useFlamingo()
   return (
     <Fragment>

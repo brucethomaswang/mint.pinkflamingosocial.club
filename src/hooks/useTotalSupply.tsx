@@ -19,7 +19,6 @@ export default function useTotalSupply() {
       called.current = true
     }
     listener.on('Mint', () => {
-      // TODO: maybe throttle
       getTotalSupply()
     })
     getTotalSupply()
