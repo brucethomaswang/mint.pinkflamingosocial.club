@@ -22,6 +22,7 @@ const Header: FC = () => {
 const Connect = () => {
   const { connect, account, status } = useMetaMask()
   const [alreadyConnected, setAlreadyConnected] = useLocalStorage<boolean>('alreadyConnected', false)
+  const [connectedAccount, setAccount] = useState<string | null>()
   const [chainId, setChainId] = useState<string | null>()
   const [provider, setProvider] = useState<any>()
   const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
@@ -42,6 +43,7 @@ const Connect = () => {
         setDialogState(WalletState.WrongChain)
       } else {
         await connect()
+        setAccount(account)
         setAlreadyConnected(true)
         setDialogOpen(false)
       }
@@ -52,6 +54,7 @@ const Connect = () => {
 
   if (provider) {
     provider.on('chainChanged', () => setChainId(provider.chainId))
+    provider.on('accountChanged', () => connect())
   }
 
   useEffect(() => {

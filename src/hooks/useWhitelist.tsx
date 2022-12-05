@@ -13,15 +13,16 @@ export default function useWhitelist(address?: string | null) {
       setIsWhitelistOnly(await PinkFlamingoSocialClub.whitelistOnly())
     }
     async function getWhitelistProof(address: string) {
-      setWhitelistProof(MerkleTree.getHexProof(address))
+      const proof = MerkleTree.getHexProof(address)
+      setWhitelistProof(proof)
+      setIsWhitelisted(proof.length > 0)
     }
-    // TODO: whitelist event
-    // listener.on('Whitelist', (on: boolean) => {
-    //   setIsWhitelistOnly(on)
-    // })
+    listener.on('Whitelist', (on: boolean) => {
+      console.info(`Whitelist ${on ? 'Only' : 'Disabled'}`)
+      setIsWhitelistOnly(on)
+    })
     getWhitelistState()
-    if (address && MerkleTree.isWhitelisted(address)) {
-      setIsWhitelisted(true)
+    if (address) {
       getWhitelistProof(address)
     }
   }, [address, setWhitelistProof, setIsWhitelistOnly])
