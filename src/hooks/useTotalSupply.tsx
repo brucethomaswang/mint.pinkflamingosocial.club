@@ -26,7 +26,9 @@ export default function useTotalSupply() {
   }, [setTotalSupply])
 
   const isConcluded = totalSupply >= MINT_LEN
-  const availableSupply = totalSupply - MINT_LEN
+
+  // TODO: availableSupply what about migrators?
+  const availableSupply = Math.abs(MINT_LEN - totalSupply)
 
   return useMemo(() => ({ isConcluded, totalSupply, availableSupply }), [isConcluded, totalSupply, availableSupply])
 }
