@@ -1,5 +1,5 @@
 export const etherAddress = '0x0000000000000000000000000000000000000000' // TODO: ??
-export const contractAddress = import.meta.env.VITE_APP_CONTRACT_ADDRESS
+export const contractAddress = import.meta.env.VITE_APP_CONTRACT_ADDRESS || ''
 export const defaultProvider = import.meta.env.VITE_APP_RPC_PROVIDER
 export const wssProvider = import.meta.env.VITE_APP_WSS_PROVIDER
 
