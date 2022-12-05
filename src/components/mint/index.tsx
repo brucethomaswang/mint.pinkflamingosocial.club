@@ -85,7 +85,7 @@ const WhitelistMintButton: FC = () => {
       console.log(e.message)
     }
   }
-  return <MintSubmit mint={mint} max={minter ? minter.whitelistMints - whitelistMintLimit : whitelistMintLimit} />
+  return <MintSubmit mint={mint} max={minter ? whitelistMintLimit - minter.whitelistMints : whitelistMintLimit} />
 }
 
 const MintProgress: FC = () => {
