@@ -1,25 +1,19 @@
 import { FC, Fragment, useEffect, useState } from 'react'
 import { useMetaMask } from 'metamask-react'
-import ClipLoader from 'react-spinners/ClipLoader'
 
 import styles from './header.module.scss'
 import config from 'config'
 import detectEthereumProvider from '@metamask/detect-provider'
 import Flamingo from 'assets/badge.svg'
 import useLocalStorage from 'hooks/useLocalStorage'
-
-enum WalletState {
-  WrongChain,
-  NoWallet,
-  Loading
-}
+import WalletModal, { WalletState } from 'components/modal'
 
 const Header: FC = () => {
   return (
     <div className={styles.navbar}>
-      <Fragment>
+      <a href="https://www.pinkflamingosocial.club/">
         <img src={Flamingo} alt="PFSC" className={styles.logo} />
-      </Fragment>
+      </a>
       <Connect />
     </div>
   )
@@ -69,63 +63,13 @@ const Connect = () => {
   return (
     <Fragment>
       {account ? (
-        <button className={styles.buttonConnected}>{status}</button>
+        <button className={styles.connected}>{status}</button>
       ) : (
-        <button className={styles.button} onClick={async () => await connected()}>
-          Connect
-        </button>
+        <button onClick={async () => await connected()}>Connect</button>
       )}
       {isDialogOpen && <WalletModal dialog={dialogState} />}
     </Fragment>
   )
-}
-
-const WrongChain = () => (
-  <div className={styles.modal}>
-    <div className={styles.header}>
-      <div className={styles.textNotification}>Wrong Network</div>
-      <hr />
-    </div>
-    <div className={styles.textNotification}>
-      Please check that you are connected to the {!config.chainId ? 'Ethereum Mainnet' : 'Goerli Testnet'} Network.
-    </div>
-  </div>
-)
-
-const NoWallet = () => (
-  <div className={styles.modal}>
-    <div className={styles.header}>
-      <h3>Get Wallet</h3>
-      <hr />
-    </div>
-
-    <h5 className={styles.text}>
-      Your wallet is your key to the crypto world. It allows you to interact with decentralized applications, from your
-      browser. Please set one up using metamask.
-    </h5>
-
-    <a className={styles.link} href="https://metamask.io/" target="_blank" rel="noopener noreferrer">
-      <button className={styles.getMetaMaskButton}>Get A Metamask Wallet</button>
-    </a>
-  </div>
-)
-
-const Loading = () => (
-  <div className={styles.modal}>
-    <div className={styles.textNotification}>One second we are checking your wallet</div>
-    <ClipLoader color="white" size={75} loading />
-  </div>
-)
-
-const WalletModal = ({ dialog }: { dialog?: WalletState }) => {
-  switch (dialog) {
-    case WalletState.NoWallet:
-      return <NoWallet />
-    case WalletState.WrongChain:
-      return <WrongChain />
-    default:
-      return <Loading />
-  }
 }
 
 export default Header
