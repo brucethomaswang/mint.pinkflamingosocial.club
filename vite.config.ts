@@ -22,7 +22,8 @@ export default defineConfig({
       services: path.resolve(__dirname, './src/services'),
       providers: path.resolve(__dirname, './src/providers'),
       utils: path.resolve(__dirname, './src/utils'),
-      config: path.resolve(__dirname, './src/config.ts')
+      config: path.resolve(__dirname, './src/config.ts'),
+      whitelist: path.resolve(__dirname, './src/whitelist')
     }
   }
 })
