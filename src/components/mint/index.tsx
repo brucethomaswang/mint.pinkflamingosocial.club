@@ -23,13 +23,13 @@ const Mint: FC = () => {
         {isPaused || isConcluded ? (
           <p className={styles.perspective}>Minting is {isConcluded ? 'Finished' : 'Paused'}</p>
         ) : (
-          <Fragment>
+          <div className={styles.cta}>
             {account ? (
               <Fragment>{isWhitelistOnly ? <WhitelistMint /> : <PublicMintButton />}</Fragment>
             ) : (
               <p className={styles.perspective}>Please connect</p>
             )}
-          </Fragment>
+          </div>
         )}
       </div>
     </div>
@@ -113,17 +113,21 @@ const MintSubmit: FC<IMintSubmit> = ({ mint, max }) => {
   //TODO: if availableSupply == zero, disable
   const { availableSupply } = useFlamingo()
   const [quantity, setQuanity] = useState<number>(1)
+  const [error, setError] = useState<boolean>(false)
 
   const increment = () => {
+    setError(false)
     if (max && quantity + 1 <= Math.min(...[availableSupply, max])) {
       setQuanity(quantity + 1)
     } else {
       // TODO: error message
+      setError(true)
       console.log('unable to mint more than requested!')
     }
   }
 
   const decrement = () => {
+    setError(false)
     if (quantity - 1 >= 1) {
       setQuanity(quantity - 1)
     }
@@ -131,16 +135,19 @@ const MintSubmit: FC<IMintSubmit> = ({ mint, max }) => {
 
   return (
     <Fragment>
-      <div className={styles.mint}>
-        <div className={styles.quantity}>
-          <button onClick={() => increment()}>+</button>
-          <button onClick={() => decrement()}>-</button>
+      <div className={styles.submit}>
+        <div className={styles.mint}>
+          <div className={styles.quantity}>
+            <button onClick={() => increment()}>+</button>
+            <button onClick={() => decrement()}>-</button>
+          </div>
+          <div className={styles.number}>{quantity}</div>
         </div>
-        <div className={styles.number}>{quantity}</div>
         <button className={styles.button} onClick={() => mint(quantity)}>
           Mint
         </button>
       </div>
+      <div className={styles.error}>{error && <p>Can't mint more than {quantity}!</p>}&nbsp;</div>
     </Fragment>
   )
 }
