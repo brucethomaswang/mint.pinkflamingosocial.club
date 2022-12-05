@@ -1,8 +1,9 @@
 import { FC, Fragment, useState } from 'react'
 import { useMetaMask } from 'metamask-react'
+import { toast } from 'react-toastify'
 
 import Banner from 'assets/LETTER.png'
-import { MINT_LEN } from 'config'
+import config, { MINT_LEN } from 'config'
 import { PinkFlamingoSocialClub } from 'services/index'
 import { useFlamingo } from 'providers/PinkFlamingoSocialClubProvider'
 import { useWeb3 } from 'providers/Web3Provider'
@@ -10,7 +11,7 @@ import styles from './mint.module.scss'
 
 const Mint: FC = () => {
   const { account } = useMetaMask()
-  const { isWhitelistOnly, isPaused, isConcluded } = useFlamingo()
+  const { isWhitelistOnly, isPaused, isConcluded, publicMintLimit } = useFlamingo()
   return (
     <div className={styles.wrapper}>
       <div className={styles.banner}>
@@ -26,7 +27,9 @@ const Mint: FC = () => {
           ) : (
             <Fragment>
               {account ? (
-                <Fragment>{isWhitelistOnly ? <WhitelistMint /> : <PublicMintButton />}</Fragment>
+                <Fragment>
+                  {isWhitelistOnly ? <WhitelistMint /> : <MintSubmit route="public" max={publicMintLimit} />}
+                </Fragment>
               ) : (
                 <p>Please Connect</p>
               )}
@@ -39,57 +42,21 @@ const Mint: FC = () => {
 }
 
 const WhitelistMint: FC = () => {
-  const { isWhitelisted } = useFlamingo()
+  const { isWhitelisted, minter, whitelistMintLimit } = useFlamingo()
+  const whitelistMintRemaning = minter ? whitelistMintLimit - minter.whitelistMints : whitelistMintLimit
   return (
     <Fragment>
-      {isWhitelisted ? (
+      {isWhitelisted && whitelistMintRemaning >= 1 ? (
         <Fragment>
-          <WhitelistMintButton />
+          <MintSubmit route="whitelist" max={whitelistMintRemaning} />
         </Fragment>
       ) : (
-        <Fragment>
-          <p>Not eligible for Whitelist</p>
-        </Fragment>
+        <div className={styles.notice}>
+          {!isWhitelisted ? <p>Not eligible for Whitelist</p> : <p>You reached the Whitelist limit</p>}
+        </div>
       )}
     </Fragment>
   )
-}
-
-const PublicMintButton: FC = () => {
-  const { wallet } = useWeb3()
-  const { publicMintLimit } = useFlamingo()
-
-  const mint = async (quantity: number) => {
-    try {
-      // TODO: modal and toast for txn success/failure
-      const tx = await PinkFlamingoSocialClub.publicMint(quantity, wallet.signer)
-      console.log(tx)
-      await tx.wait()
-      console.log(tx)
-    } catch (err) {
-      const e = err as Error
-      console.log(e.message)
-    }
-  }
-  return <MintSubmit mint={mint} max={publicMintLimit} />
-}
-
-const WhitelistMintButton: FC = () => {
-  const { wallet } = useWeb3()
-  const { minter, whitelistMintLimit, whitelistProof } = useFlamingo()
-  const mint = async (quantity: number) => {
-    try {
-      // TODO: modal and toast for txn success/failure
-      const tx = await PinkFlamingoSocialClub.whitelistMint(whitelistProof, quantity, wallet.signer)
-      console.log(tx)
-      await tx.wait()
-      console.log(tx)
-    } catch (err) {
-      const e = err as Error
-      console.log(e.message)
-    }
-  }
-  return <MintSubmit mint={mint} max={minter ? whitelistMintLimit - minter.whitelistMints : whitelistMintLimit} />
 }
 
 const MintProgress: FC = () => {
@@ -112,15 +79,48 @@ const MintProgress: FC = () => {
 }
 
 interface IMintSubmit {
-  mint: (quantity: number) => Promise<void>
+  route: 'whitelist' | 'public'
   max?: number
 }
 
-const MintSubmit: FC<IMintSubmit> = ({ mint, max }) => {
-  //TODO: if availableSupply == zero, disable
-  const { availableSupply } = useFlamingo()
+const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
+  //NOTE: if availableSupply == zero, disable
+  const { wallet } = useWeb3()
+  const { availableSupply, whitelistProof } = useFlamingo()
   const [quantity, setQuanity] = useState<number>(1)
   const [error, setError] = useState<boolean>(false)
+
+  const mint = async (quantity: number) => {
+    let tx
+    const id = toast.loading('Submitting... ', {
+      position: toast.POSITION.BOTTOM_RIGHT,
+      theme: 'dark'
+    })
+    try {
+      if (route === 'whitelist') {
+        tx = await PinkFlamingoSocialClub.whitelistMint(whitelistProof, quantity, wallet.signer)
+      } else {
+        tx = await PinkFlamingoSocialClub.publicMint(quantity, wallet.signer)
+      }
+      toast.update(id, { render: 'Submitted', isLoading: false, autoClose: 100 })
+      toast.success(
+        <span>
+          Submitted:&nbsp;
+          <a className={styles.toast} target="_blank" href={`${config.etherscanUrl}tx/${tx.hash}`}>
+            {tx.hash.replace(/(.{10})..+/, '$1…')}
+          </a>
+        </span>,
+        {
+          autoClose: false,
+          position: toast.POSITION.BOTTOM_RIGHT,
+          theme: 'dark'
+        }
+      )
+      await tx.wait()
+    } catch (err) {
+      console.log(err)
+    }
+  }
 
   const increment = () => {
     setError(false)
@@ -148,7 +148,13 @@ const MintSubmit: FC<IMintSubmit> = ({ mint, max }) => {
           </div>
           <div className={styles.number}>{quantity}</div>
         </div>
-        <button className={styles.button} onClick={() => mint(quantity)}>
+        <button
+          className={styles.button}
+          onClick={() => {
+            mint(quantity)
+            setQuanity(1)
+          }}
+        >
           Mint
         </button>
       </div>
