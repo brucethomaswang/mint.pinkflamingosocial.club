@@ -13,7 +13,7 @@ const WrongChain = () => (
     <h1>Wrong Network</h1>
     <hr />
     <br />
-    <p>Please check that you are connected to the {!config.chainId ? 'Ethereum Mainnet' : 'Goerli Testnet'} Network.</p>
+    <p>Connect to {config.chainId === 1 ? 'Ethereum Mainnet' : 'Goerli Testnet'}</p>
   </div>
 )
 
