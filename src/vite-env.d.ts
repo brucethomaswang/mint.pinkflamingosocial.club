@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_CONTRACT_ADDRESS: string
   readonly VITE_APP_NETWORK: string
   readonly VITE_APP_MINT_LEN: number
+  readonly VITE_APP_FALLBACK_PROVIDER: string
 }
 
 interface ImportMeta {

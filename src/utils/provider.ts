@@ -12,7 +12,7 @@ function web3ProviderFrom(endpoint: string, timeout: number): any {
 
 export function getDefaultProvider(): ethers.providers.Web3Provider {
   return new ethers.providers.Web3Provider(
-    web3ProviderFrom(config.defaultProvider, config.config?.ethereumNodeTimeout),
+    web3ProviderFrom(config.fallbackProvider, config.config?.ethereumNodeTimeout),
     config.chainId
   )
 }
