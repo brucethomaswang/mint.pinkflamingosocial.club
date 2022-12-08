@@ -1,31 +1,43 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState, useRef } from 'react'
 
 import { PinkFlamingoSocialClub, MerkleTree } from 'services/index'
 import { listener } from 'services/PinkFlamingoSocialClub'
 
 export default function useWhitelist(address?: string | null) {
+  const called = useRef(false)
   const [isWhitelistOnly, setIsWhitelistOnly] = useState<boolean>(true)
   const [isWhitelisted, setIsWhitelisted] = useState<boolean>(false)
   const [whitelistProof, setWhitelistProof] = useState<string[]>([])
 
+  const whitelistHandler = (on: boolean) => {
+    console.info(`Whitelist ${on ? 'Only' : 'Disabled'}`)
+    setIsWhitelistOnly(on)
+  }
+
   useEffect(() => {
-    async function getWhitelistState() {
+    if (called.current) return
+    ;(async () => {
+      console.log('called useWhitelist')
       setIsWhitelistOnly(await PinkFlamingoSocialClub.whitelistOnly())
-    }
-    async function getWhitelistProof(address: string) {
+      called.current = true
+    })()
+  }, [address])
+
+  // TODO: maybe merge these ^
+  useCallback(() => {
+    if (address) {
       const proof = MerkleTree.getHexProof(address)
       setWhitelistProof(proof)
       setIsWhitelisted(proof.length > 0)
     }
-    listener.on('Whitelist', (on: boolean) => {
-      console.info(`Whitelist ${on ? 'Only' : 'Disabled'}`)
-      setIsWhitelistOnly(on)
-    })
-    getWhitelistState()
-    if (address) {
-      getWhitelistProof(address)
+  }, [address])
+
+  useEffect(() => {
+    listener.on('Whitelist', whitelistHandler)
+    return () => {
+      listener.off('Whitelist', whitelistHandler)
     }
-  }, [address, setWhitelistProof, setIsWhitelistOnly])
+  }, [])
 
   return useMemo(
     () => ({ whitelistProof, isWhitelistOnly, isWhitelisted }),

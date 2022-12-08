@@ -9,6 +9,7 @@ import useMintLimits from 'hooks/useMintLimits'
 import useTotalSupply from 'hooks/useTotalSupply'
 import useMinter from 'hooks/useMinter'
 import usePaused from 'hooks/usePaused'
+import { BigNumber } from 'ethers'
 
 interface IPinkFlamingoSocialClub {
   minter: Minter | null
@@ -19,8 +20,10 @@ interface IPinkFlamingoSocialClub {
   whitelistProof: string[]
   publicMintLimit: number
   whitelistMintLimit: number
-  publicPrice: string
-  whitelistPrice: string
+  publicPriceWei: BigNumber
+  whitelistPriceWei: BigNumber
+  publicPriceEth: string
+  whitelistPriceEth: string
   totalSupply: number
   availableSupply: number
 }
@@ -32,7 +35,7 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
   const { isWhitelistOnly, whitelistProof, isWhitelisted } = useWhitelist(account)
   const { minter } = useMinter(account)
   const { publicMintLimit, whitelistMintLimit } = useMintLimits()
-  const { publicPrice, whitelistPrice } = useMintPrice()
+  const { publicPriceWei, whitelistPriceWei, publicPriceEth, whitelistPriceEth } = useMintPrice()
   const { isPaused } = usePaused()
   const { totalSupply, isConcluded, availableSupply } = useTotalSupply()
 
@@ -46,8 +49,10 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
       whitelistProof,
       publicMintLimit,
       whitelistMintLimit,
-      publicPrice,
-      whitelistPrice,
+      publicPriceWei,
+      whitelistPriceWei,
+      publicPriceEth,
+      whitelistPriceEth,
       totalSupply,
       availableSupply
     }),
@@ -60,8 +65,10 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
       whitelistProof,
       publicMintLimit,
       whitelistMintLimit,
-      publicPrice,
-      whitelistPrice,
+      publicPriceWei,
+      whitelistPriceWei,
+      publicPriceEth,
+      whitelistPriceEth,
       totalSupply,
       availableSupply
     ]

@@ -9,16 +9,14 @@ export default function useMinter(address: string | null) {
   const [minter, setMinter] = useState<Minter | null>(null)
 
   useEffect(() => {
-    if (called.current) {
-      return
-    }
-    async function getMinter() {
+    if (called.current) return
+    ;(async () => {
       if (address) {
+        console.log('called setMinter')
         setMinter(await PinkFlamingoSocialClub.minters(address))
         called.current = true
       }
-    }
-    getMinter()
+    })()
   }, [address])
 
   return useMemo(() => ({ minter }), [minter])

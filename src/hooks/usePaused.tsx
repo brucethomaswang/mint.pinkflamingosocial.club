@@ -9,14 +9,22 @@ export default function usePaused() {
   const [isPaused, setIsPaused] = useLocalStorage<boolean>('isPaused', false)
 
   useEffect(() => {
-    async function getPaused() {
+    if (called.current) return
+    ;(async () => {
+      console.log('called usePaused')
       setIsPaused(await PinkFlamingoSocialClub.paused())
       called.current = true
-    }
+    })()
+  }, [])
+
+  useEffect(() => {
     listener.on('Paused', () => setIsPaused(true))
     listener.on('Unpaused', () => setIsPaused(false))
-    getPaused()
-  }, [setIsPaused])
+    return () => {
+      listener.off('Paused', setIsPaused)
+      listener.off('Unpaused', setIsPaused)
+    }
+  }, [])
 
   return useMemo(() => ({ isPaused }), [isPaused])
 }
