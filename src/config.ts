@@ -1,7 +1,8 @@
 export const etherAddress = '0x0000000000000000000000000000000000000000' // TODO: ??
-export const contractAddress = import.meta.env.VITE_APP_CONTRACT_ADDRESS
-export const defaultProvider = import.meta.env.VITE_APP_RPC_PROVIDER
-export const wssProvider = import.meta.env.VITE_APP_WSS_PROVIDER
+export const CONTRACT_ADDRESS = import.meta.env.VITE_APP_CONTRACT_ADDRESS
+export const DEFAULT_PROVIDER = import.meta.env.VITE_APP_RPC_PROVIDER
+export const WSS_PROVIDER = import.meta.env.VITE_APP_WSS_PROVIDER
+export const FALLBACK_PROVIDER = import.meta.env.VITE_APP_FALLBACK_PROVIDER
 
 export const NETWORK = import.meta.env.VITE_APP_NETWORK
 export const MINT_LEN = import.meta.env.VITE_APP_MINT_LEN
@@ -12,6 +13,7 @@ export type Configuration = {
   etherscanUrl: string
   contractAddress: string
   defaultProvider: string
+  fallbackProvider: string
   wssProvider: string
   config: EthereumConfig
   pollingInterval?: number
@@ -41,9 +43,10 @@ const configurations: { [env: string]: Configuration } = {
   goreli: {
     name: 'goerli',
     chainId: 5,
-    contractAddress,
-    defaultProvider,
-    wssProvider,
+    contractAddress: CONTRACT_ADDRESS,
+    defaultProvider: DEFAULT_PROVIDER,
+    fallbackProvider: FALLBACK_PROVIDER,
+    wssProvider: WSS_PROVIDER,
     etherscanUrl: 'https://goerli.etherscan.io/',
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,
@@ -52,9 +55,10 @@ const configurations: { [env: string]: Configuration } = {
   ethereum: {
     name: 'homestead',
     chainId: 1,
-    contractAddress,
-    defaultProvider,
-    wssProvider,
+    contractAddress: CONTRACT_ADDRESS,
+    defaultProvider: DEFAULT_PROVIDER,
+    fallbackProvider: FALLBACK_PROVIDER,
+    wssProvider: WSS_PROVIDER,
     etherscanUrl: 'https://etherscan.io/',
     refreshInterval: 10000,
     gasLimitMultiplier: 1.1,

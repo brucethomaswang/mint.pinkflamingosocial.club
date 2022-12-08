@@ -60,7 +60,7 @@ const WhitelistMint: FC = () => {
 }
 
 const MintProgress: FC = () => {
-  const { totalSupply, publicPrice, isWhitelistOnly, whitelistPrice } = useFlamingo()
+  const { totalSupply, publicPriceEth, isWhitelistOnly, whitelistPriceEth } = useFlamingo()
   return (
     <Fragment>
       <div className={styles.progress}>
@@ -71,7 +71,7 @@ const MintProgress: FC = () => {
         <div>{MINT_LEN}</div>
       </div>
       <div className={styles.price}>
-        {isWhitelistOnly ? <p>Whitelist {whitelistPrice} ETH</p> : <p>Public {publicPrice} ETH</p>}
+        {isWhitelistOnly ? <p>Whitelist {whitelistPriceEth} ETH</p> : <p>Public {publicPriceEth} ETH</p>}
       </div>
     </Fragment>
   )
@@ -85,7 +85,7 @@ interface IMintSubmit {
 const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
   //NOTE: if availableSupply == zero, disable
   const { wallet } = useWeb3()
-  const { availableSupply, whitelistProof } = useFlamingo()
+  const { availableSupply, whitelistProof, publicPriceWei, whitelistPriceWei } = useFlamingo()
   const [quantity, setQuanity] = useState<number>(1)
   const [error, setError] = useState<boolean>(false)
 
@@ -97,9 +97,9 @@ const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
     })
     try {
       if (route === 'whitelist') {
-        tx = await PinkFlamingoSocialClub.whitelistMint(whitelistProof, quantity, wallet.signer)
+        tx = await PinkFlamingoSocialClub.whitelistMint(whitelistProof, quantity, whitelistPriceWei, wallet.signer)
       } else {
-        tx = await PinkFlamingoSocialClub.publicMint(quantity, wallet.signer)
+        tx = await PinkFlamingoSocialClub.publicMint(quantity, publicPriceWei, wallet.signer)
       }
       toast.update(id, { render: 'Submitted', isLoading: false, autoClose: 100 })
       toast.success(

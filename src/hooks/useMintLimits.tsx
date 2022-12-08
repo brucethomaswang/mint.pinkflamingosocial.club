@@ -9,16 +9,13 @@ export default function useMinter() {
   const [whitelistMintLimit, setWhitelistMintLimit] = useLocalStorage<number>('whitelistMintLimit', 3)
 
   useEffect(() => {
-    if (called.current) {
-      return
-    }
-    async function getLimits() {
+    if (called.current) return
+    ;(async () => {
       setWhitelistMintLimit(await PinkFlamingoSocialClub.whitelistMintLimit())
       setPublicMintLimit(await PinkFlamingoSocialClub.publicMintLimit())
       called.current = true
-    }
-    getLimits()
-  }, [setWhitelistMintLimit, setPublicMintLimit])
+    })()
+  }, [])
 
   return useMemo(() => ({ publicMintLimit, whitelistMintLimit }), [publicMintLimit, whitelistMintLimit])
 }
