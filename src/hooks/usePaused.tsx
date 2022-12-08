@@ -8,21 +8,23 @@ export default function usePaused() {
   const called = useRef(false)
   const [isPaused, setIsPaused] = useLocalStorage<boolean>('isPaused', false)
 
+  const setPaused = () => setIsPaused(true)
+  const setUnpaused = () => setIsPaused(false)
+
   useEffect(() => {
     if (called.current) return
     ;(async () => {
-      console.log('called usePaused')
       setIsPaused(await PinkFlamingoSocialClub.paused())
       called.current = true
     })()
   }, [])
 
   useEffect(() => {
-    listener.on('Paused', () => setIsPaused(true))
-    listener.on('Unpaused', () => setIsPaused(false))
+    listener.on('Paused', setPaused)
+    listener.on('Unpaused', setUnpaused)
     return () => {
-      listener.off('Paused', setIsPaused)
-      listener.off('Unpaused', setIsPaused)
+      listener.off('Paused', setPaused)
+      listener.off('Unpaused', setUnpaused)
     }
   }, [])
 
