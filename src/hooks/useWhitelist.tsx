@@ -17,7 +17,6 @@ export default function useWhitelist(address?: string | null) {
   useEffect(() => {
     if (called.current) return
     ;(async () => {
-      console.log('called useWhitelist')
       setIsWhitelistOnly(await PinkFlamingoSocialClub.whitelistOnly())
       called.current = true
     })()

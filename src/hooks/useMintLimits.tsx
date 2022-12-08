@@ -11,7 +11,6 @@ export default function useMinter() {
   useEffect(() => {
     if (called.current) return
     ;(async () => {
-      console.log('called useMintLimits')
       setWhitelistMintLimit(await PinkFlamingoSocialClub.whitelistMintLimit())
       setPublicMintLimit(await PinkFlamingoSocialClub.publicMintLimit())
       called.current = true

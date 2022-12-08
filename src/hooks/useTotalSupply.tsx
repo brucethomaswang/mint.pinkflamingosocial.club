@@ -11,7 +11,6 @@ export default function useTotalSupply() {
   const [totalSupply, setTotalSupply] = useLocalStorage<number>('totalSupply', 0)
 
   const totalSupplyHandler = debounce(async () => {
-    console.log('called totalSupply')
     const totalSupply = await PinkFlamingoSocialClub.totalSupply()
     setTotalSupply(totalSupply.toNumber())
     called.current = true

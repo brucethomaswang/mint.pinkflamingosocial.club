@@ -12,7 +12,6 @@ export default function useMinter(address: string | null) {
     if (called.current) return
     ;(async () => {
       if (address) {
-        console.log('called setMinter')
         setMinter(await PinkFlamingoSocialClub.minters(address))
         called.current = true
       }

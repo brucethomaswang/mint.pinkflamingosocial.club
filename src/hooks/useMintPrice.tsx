@@ -15,7 +15,6 @@ export default function useMintPrice() {
   useEffect(() => {
     if (called.current) return
     ;(async () => {
-      console.log('called useMintPrice')
       const whitelistWei = await PinkFlamingoSocialClub.whitelistPriceInWei()
       const publicWei = await PinkFlamingoSocialClub.publicPriceInWei()
       setPublicPriceWei(publicWei)
