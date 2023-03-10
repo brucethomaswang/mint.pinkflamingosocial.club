@@ -1,6 +1,7 @@
 import { FC, Fragment, useState } from 'react'
 import { useMetaMask } from 'metamask-react'
 import { toast } from 'react-toastify'
+import ClipLoader from 'react-spinners/ClipLoader'
 
 import Banner from 'assets/LETTER.png'
 import config, { MINT_LEN } from 'config'
@@ -11,7 +12,7 @@ import styles from './mint.module.scss'
 
 const Mint: FC = () => {
   const { account } = useMetaMask()
-  const { isWhitelistOnly, isPaused, isConcluded, publicMintLimit } = useFlamingo()
+  const { whitelist, isPaused, isConcluded, publicMintLimit } = useFlamingo()
   return (
     <div className={styles.wrapper}>
       <div className={styles.banner}>
@@ -28,7 +29,17 @@ const Mint: FC = () => {
             <Fragment>
               {account ? (
                 <Fragment>
-                  {isWhitelistOnly ? <WhitelistMint /> : <MintSubmit route="public" max={publicMintLimit} />}
+                  {whitelist.isLoading ? (
+                    <ClipLoader color="white" size={75} loading />
+                  ) : (
+                    <Fragment>
+                      {whitelist.isWhitelistOnly ? (
+                        <WhitelistMint />
+                      ) : (
+                        <MintSubmit route="public" max={publicMintLimit} />
+                      )}
+                    </Fragment>
+                  )}
                 </Fragment>
               ) : (
                 <p>Please Connect</p>
@@ -42,17 +53,17 @@ const Mint: FC = () => {
 }
 
 const WhitelistMint: FC = () => {
-  const { isWhitelisted, minter, whitelistMintLimit } = useFlamingo()
+  const { whitelist, minter, whitelistMintLimit } = useFlamingo()
   const whitelistMintRemaning = minter ? whitelistMintLimit - minter.whitelistMints : whitelistMintLimit
   return (
     <Fragment>
-      {isWhitelisted && whitelistMintRemaning >= 1 ? (
+      {whitelist.isWhitelisted && whitelistMintRemaning >= 1 ? (
         <Fragment>
           <MintSubmit route="whitelist" max={whitelistMintRemaning} />
         </Fragment>
       ) : (
         <div className={styles.notice}>
-          {!isWhitelisted ? <p>Not eligible for Whitelist</p> : <p>You reached the Whitelist limit</p>}
+          {!whitelist.isWhitelisted ? <p>Not eligible for Whitelist</p> : <p>You reached the Whitelist limit</p>}
         </div>
       )}
     </Fragment>
@@ -60,7 +71,7 @@ const WhitelistMint: FC = () => {
 }
 
 const MintProgress: FC = () => {
-  const { totalSupply, publicPriceEth, isWhitelistOnly, whitelistPriceEth } = useFlamingo()
+  const { totalSupply, publicPriceEth, whitelist, whitelistPriceEth } = useFlamingo()
   return (
     <Fragment>
       <div className={styles.progress}>
@@ -71,10 +82,39 @@ const MintProgress: FC = () => {
         <div>{MINT_LEN}</div>
       </div>
       <div className={styles.price}>
-        {isWhitelistOnly ? <p>Whitelist {whitelistPriceEth} ETH</p> : <p>Public {publicPriceEth} ETH</p>}
+        {!whitelist.isLoading && (
+          <Fragment>
+            {whitelist.isWhitelistOnly ? <p>Whitelist {whitelistPriceEth} ETH</p> : <p>Public {publicPriceEth} ETH</p>}
+          </Fragment>
+        )}
       </div>
     </Fragment>
   )
+}
+
+interface IProviderRpcSuccess {
+  hash: string
+}
+
+const SuccessToast: FC<{ data: IProviderRpcSuccess }> = ({ data }: { data: any }) => {
+  return (
+    <span>
+      Submitted:&nbsp;
+      <a className={styles.toast} target="_blank" href={`${config.etherscanUrl}tx/${data.hash}`}>
+        {data.hash.replace(/(.{10})..+/, '$1…')}
+      </a>
+    </span>
+  )
+}
+
+interface IProviderRpcError extends Error {
+  message: string
+  code: number
+  data?: unknown
+}
+
+const ErrorToast: FC<{ data: IProviderRpcError }> = ({ data }: { data: IProviderRpcError }) => {
+  return <span>Failed:&nbsp;{data.code}</span>
 }
 
 interface IMintSubmit {
@@ -85,40 +125,38 @@ interface IMintSubmit {
 const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
   //NOTE: if availableSupply == zero, disable
   const { wallet } = useWeb3()
-  const { availableSupply, whitelistProof, publicPriceWei, whitelistPriceWei } = useFlamingo()
+  const { availableSupply, whitelist, publicPriceWei, whitelistPriceWei } = useFlamingo()
   const [quantity, setQuanity] = useState<number>(1)
   const [error, setError] = useState<boolean>(false)
 
+  const mintedOut = availableSupply === 0
+
   const mint = async (quantity: number) => {
-    let tx
-    const id = toast.loading('Submitting... ', {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      theme: 'dark'
-    })
-    try {
-      if (route === 'whitelist') {
-        tx = await PinkFlamingoSocialClub.whitelistMint(whitelistProof, quantity, whitelistPriceWei, wallet.signer)
-      } else {
-        tx = await PinkFlamingoSocialClub.publicMint(quantity, publicPriceWei, wallet.signer)
-      }
-      toast.update(id, { render: 'Submitted', isLoading: false, autoClose: 100 })
-      toast.success(
-        <span>
-          Submitted:&nbsp;
-          <a className={styles.toast} target="_blank" href={`${config.etherscanUrl}tx/${tx.hash}`}>
-            {tx.hash.replace(/(.{10})..+/, '$1…')}
-          </a>
-        </span>,
-        {
-          autoClose: false,
-          position: toast.POSITION.BOTTOM_RIGHT,
-          theme: 'dark'
+    const submission =
+      route === 'whitelist'
+        ? PinkFlamingoSocialClub.whitelistMint(whitelist.whitelistProof, quantity, whitelistPriceWei, wallet.signer)
+        : PinkFlamingoSocialClub.publicMint(quantity, publicPriceWei, wallet.signer)
+
+    const transaction = await toast.promise(submission, {
+      pending: 'Submitting...',
+      success: {
+        render({ data }) {
+          return <SuccessToast data={data as IProviderRpcSuccess} />
+        },
+        autoClose: 30000
+      },
+      error: {
+        render({ data }) {
+          return <ErrorToast data={data as IProviderRpcError} />
         }
-      )
-      await tx.wait()
-    } catch (err) {
-      console.log(err)
-    }
+      }
+    })
+
+    toast.promise(transaction.wait, {
+      pending: 'Submitted',
+      success: 'Flamingo Minted 👌',
+      error: 'Transaction Reverted'
+    })
   }
 
   const increment = () => {
@@ -148,16 +186,22 @@ const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
           <div className={styles.number}>{quantity}</div>
         </div>
         <button
+          disabled={mintedOut}
           className={styles.button}
           onClick={() => {
             mint(quantity)
-            setQuanity(1)
+            if (quantity > 1) {
+              setQuanity(1)
+            }
           }}
         >
-          Mint
+          {mintedOut ? 'Finished' : 'Mint'}
         </button>
       </div>
-      <div className={styles.error}>{error && <p>Can't mint more than {quantity}!</p>}&nbsp;</div>
+      <div className={styles.error}>
+        {error && <p>No more than {quantity}!</p>}
+        &nbsp;
+      </div>
     </Fragment>
   )
 }

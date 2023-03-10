@@ -1,6 +1,7 @@
 @import '../../index.scss';
 
 .wrapper {
+  background-color: red;
   margin: 0;
   color: #FFF;
   font-family: 'Roboto', sans-serif;
@@ -106,6 +107,12 @@
       border-radius: 4px;
       margin-bottom: 6px;
 
+      opacity: 1;
+      animation-name: fade;
+      animation-iteration-count: 1;
+      animation-timing-function: ease-in;
+      animation-duration: 0.5s;
+
       .mint {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -174,8 +181,9 @@
   }
 
   .error {
-    position: relative;
-    margin-top: 35px;
+    width: 154px;
+    position: absolute;
+    margin: 0 auto;
     text-align: center;
   }
 }

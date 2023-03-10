@@ -1,12 +1,10 @@
-import { FC, Fragment, useEffect, useState } from 'react'
-import { useMetaMask } from 'metamask-react'
+import { FC, Fragment } from 'react'
 
 import styles from './header.module.scss'
-import config from 'config'
-import detectEthereumProvider from '@metamask/detect-provider'
+
 import Flamingo from 'assets/badge.svg'
-import useLocalStorage from 'hooks/useLocalStorage'
-import WalletModal, { WalletState } from 'components/modal'
+import WalletModal from 'components/modal'
+import useWallet from 'hooks/useWallet'
 
 const Header: FC = () => {
   return (
@@ -20,57 +18,15 @@ const Header: FC = () => {
 }
 
 const Connect = () => {
-  const { connect, account, status } = useMetaMask()
-  const [alreadyConnected, setAlreadyConnected] = useLocalStorage<boolean>('alreadyConnected', false)
-  const [connectedAccount, setAccount] = useState<string | null>()
-  const [chainId, setChainId] = useState<string | null>()
-  const [provider, setProvider] = useState<any>()
-  const [isDialogOpen, setDialogOpen] = useState<boolean>(false)
-  const [dialogState, setDialogState] = useState<WalletState>()
-
-  useEffect(() => {
-    async function detectProvider() {
-      setProvider(await detectEthereumProvider())
-    }
-    detectProvider()
-  }, [])
-
-  const connected = async () => {
-    setDialogOpen(true)
-    setDialogState(WalletState.Loading)
-    if (provider) {
-      if (provider.chainId !== `0x${config.chainId}`) {
-        setDialogState(WalletState.WrongChain)
-      } else {
-        await connect()
-        setAccount(account)
-        setAlreadyConnected(true)
-        setDialogOpen(false)
-      }
-    } else {
-      setDialogState(WalletState.NoWallet)
-    }
-  }
-
-  if (provider) {
-    provider.on('chainChanged', () => setChainId(provider.chainId))
-    provider.on('accountChanged', () => connect())
-  }
-
-  useEffect(() => {
-    if (provider && alreadyConnected) {
-      connected()
-    }
-  }, [alreadyConnected, provider, chainId])
-
+  const { status, account, connect, state, isLoading } = useWallet()
   return (
     <Fragment>
       {account ? (
-        <button className={styles.connected}>{status}</button>
+        <button className={styles.connected}>{isLoading ? 'loading' : status}</button>
       ) : (
-        <button onClick={async () => await connected()}>Connect</button>
+        <button onClick={async () => await connect()}>Connect</button>
       )}
-      {isDialogOpen && <WalletModal dialog={dialogState} />}
+      {state !== null && <WalletModal dialog={state} />}
     </Fragment>
   )
 }

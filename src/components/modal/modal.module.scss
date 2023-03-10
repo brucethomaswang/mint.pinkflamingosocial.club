@@ -1,3 +1,5 @@
+@import '../../index.scss';
+
 .modal {
     font-family: 'GothamMedium';
     background-color: #0C0922;
@@ -54,11 +56,3 @@
 }
 
 
-@keyframes fade {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}

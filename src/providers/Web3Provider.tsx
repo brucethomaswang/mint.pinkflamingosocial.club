@@ -4,11 +4,11 @@ import { useMetaMask } from 'metamask-react'
 import { Wallet } from 'utils/Wallet'
 import config from 'config'
 
-interface Web3ProviderValue {
+interface IWeb3ProviderValue {
   wallet: Wallet
 }
 
-const Web3Context = createContext({} as Web3ProviderValue)
+const Web3Context = createContext({} as IWeb3ProviderValue)
 
 function Web3Provider({ children }: { children: ReactNode }): ReactElement {
   const { account, ethereum } = useMetaMask()
@@ -26,9 +26,9 @@ function Web3Provider({ children }: { children: ReactNode }): ReactElement {
     }
   }, [account, ethereum, wallet])
 
-  return <Web3Context.Provider value={{ wallet } as Web3ProviderValue}>{children}</Web3Context.Provider>
+  return <Web3Context.Provider value={{ wallet } as IWeb3ProviderValue}>{children}</Web3Context.Provider>
 }
 
-const useWeb3 = (): Web3ProviderValue => useContext(Web3Context)
+const useWeb3 = (): IWeb3ProviderValue => useContext(Web3Context)
 export { Web3Provider, useWeb3, Web3Context }
 export default Web3Provider
