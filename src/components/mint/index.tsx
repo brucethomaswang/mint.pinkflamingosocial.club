@@ -154,7 +154,7 @@ const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
     })
 
     toast.promise(transaction.wait, {
-      pending: 'Submitted',
+      pending: 'Waiting...',
       success: 'Flamingo Minted 👌',
       error: 'Transaction Reverted'
     })
