@@ -1,27 +1,35 @@
 import { useMemo, useRef, useEffect } from 'react'
-import debounce from 'lodash.debounce'
 
 import { PinkFlamingoSocialClub } from 'services/index'
 import { listener } from 'services/PinkFlamingoSocialClub'
 import useLocalStorage from 'hooks/useLocalStorage'
 import { MINT_LEN } from 'config'
+import { BigNumber } from 'ethers'
+import { useDebouncedQuery } from './useDebouncedQuery'
+
+export type ITotalSupply = {
+  isConcluded: boolean
+  totalSupply: number
+  availableSupply: number
+  isLoading: boolean
+}
 
 export default function useTotalSupply() {
-  const called = useRef(false)
   const [totalSupply, setTotalSupply] = useLocalStorage<number>('totalSupply', 0)
 
-  const totalSupplyHandler = debounce(async () => {
-    const totalSupply = await PinkFlamingoSocialClub.totalSupply()
-    setTotalSupply(totalSupply.toNumber())
-    called.current = true
-  }, 500)
+  const { refetch, isLoading } = useDebouncedQuery<BigNumber>(
+    {
+      queryKey: ['totalSupply'],
+      queryFn: async (): Promise<BigNumber> => await PinkFlamingoSocialClub.totalSupply(),
+      onSuccess: (data) => setTotalSupply(data.toNumber())
+    },
+    500
+  )
 
   useEffect(() => {
-    if (called.current) return
-    totalSupplyHandler()
-    listener.on('Mint', totalSupplyHandler)
+    listener.on('Mint', refetch)
     return () => {
-      listener.off('Mint', totalSupplyHandler)
+      listener.off('Mint', refetch)
     }
   }, [])
 
@@ -30,5 +38,8 @@ export default function useTotalSupply() {
   // TODO: availableSupply what about migrators?
   const availableSupply = Math.abs(MINT_LEN - totalSupply)
 
-  return useMemo(() => ({ isConcluded, totalSupply, availableSupply }), [isConcluded, totalSupply, availableSupply])
+  return useMemo(
+    () => ({ isConcluded, totalSupply, availableSupply, isLoading }),
+    [isConcluded, totalSupply, availableSupply, isLoading]
+  )
 }

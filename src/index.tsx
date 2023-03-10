@@ -12,6 +12,6 @@ import './index.scss'
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <App />
-    <ToastContainer />
+    <ToastContainer theme="dark" position="bottom-right" hideProgressBar closeButton={false} />
   </React.StrictMode>
 )

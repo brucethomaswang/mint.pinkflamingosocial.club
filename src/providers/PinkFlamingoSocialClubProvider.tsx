@@ -3,7 +3,7 @@ import { useMetaMask } from 'metamask-react'
 
 import { Minter } from 'services/PinkFlamingoSocialClub'
 
-import useWhitelist from 'hooks/useWhitelist'
+import useWhitelist, { IWhitelist } from 'hooks/useWhitelist'
 import useMintPrice from 'hooks/useMintPrice'
 import useMintLimits from 'hooks/useMintLimits'
 import useTotalSupply from 'hooks/useTotalSupply'
@@ -15,9 +15,7 @@ interface IPinkFlamingoSocialClub {
   minter: Minter | null
   isPaused: boolean
   isConcluded: boolean
-  isWhitelisted: boolean
-  isWhitelistOnly: boolean
-  whitelistProof: string[]
+  whitelist: IWhitelist
   publicMintLimit: number
   whitelistMintLimit: number
   publicPriceWei: BigNumber
@@ -32,7 +30,7 @@ const PinkFlamingoSocialClubContext = createContext<IPinkFlamingoSocialClub>({} 
 
 function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): ReactElement {
   const { account } = useMetaMask()
-  const { isWhitelistOnly, whitelistProof, isWhitelisted } = useWhitelist(account)
+  const whitelist = useWhitelist(account)
   const { minter } = useMinter(account)
   const { publicMintLimit, whitelistMintLimit } = useMintLimits()
   const { publicPriceWei, whitelistPriceWei, publicPriceEth, whitelistPriceEth } = useMintPrice()
@@ -44,9 +42,7 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
       minter,
       isPaused,
       isConcluded,
-      isWhitelisted,
-      isWhitelistOnly,
-      whitelistProof,
+      whitelist,
       publicMintLimit,
       whitelistMintLimit,
       publicPriceWei,
@@ -60,9 +56,7 @@ function PinkFlamingoSocialClubProvider({ children }: { children: ReactNode }): 
       minter,
       isPaused,
       isConcluded,
-      isWhitelisted,
-      isWhitelistOnly,
-      whitelistProof,
+      whitelist,
       publicMintLimit,
       whitelistMintLimit,
       publicPriceWei,

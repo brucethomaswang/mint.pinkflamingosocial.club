@@ -49,3 +49,12 @@ $screen-xxl-min: 2000px;
      url("fonts/Heavitas.ttf") format("truetype");
     font-weight: medium;
 }
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

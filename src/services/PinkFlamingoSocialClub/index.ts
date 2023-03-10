@@ -14,7 +14,7 @@ export type Minter = {
 
 export const functions = {
   publicPriceInWei: async (): Promise<BigNumber> => await contract.publicPriceInWei(),
-  whitelistPriceInWei: async (): Promise<string> => await contract.whitelistPriceInWei(),
+  whitelistPriceInWei: async (): Promise<BigNumber> => await contract.whitelistPriceInWei(),
   publicMintLimit: async (): Promise<number> => await contract.publicMintLimit(),
   whitelistMintLimit: async (): Promise<number> => await contract.whitelistMintLimit(),
   whitelistOnly: async (): Promise<boolean> => await contract.whitelistOnly(),
