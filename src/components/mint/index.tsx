@@ -30,7 +30,7 @@ const Mint: FC = () => {
               {account ? (
                 <Fragment>
                   {whitelist.isLoading ? (
-                    <ClipLoader color="white" size={75} loading />
+                    <ClipLoader color="white" size={50} loading />
                   ) : (
                     <Fragment>
                       {whitelist.isWhitelistOnly ? (
@@ -130,6 +130,7 @@ const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
   const [error, setError] = useState<boolean>(false)
 
   const mintedOut = availableSupply === 0
+  const retrievingPrice = publicPriceWei.toString() == '0'
 
   const mint = async (quantity: number) => {
     const submission =
@@ -186,7 +187,7 @@ const MintSubmit: FC<IMintSubmit> = ({ route, max }) => {
           <div className={styles.number}>{quantity}</div>
         </div>
         <button
-          disabled={mintedOut}
+          disabled={mintedOut || retrievingPrice}
           className={styles.button}
           onClick={() => {
             mint(quantity)

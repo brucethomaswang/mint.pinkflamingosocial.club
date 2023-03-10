@@ -14,19 +14,18 @@ export default function useMintPrice() {
   const [whitelistPriceWei, setWhitelistPriceWei] = useState<BigNumber>(zero)
   const [publicPriceWei, setPublicPriceWei] = useState<BigNumber>(zero)
 
-  // NOTE: Disabled to save credits
-  // useEffect(() => {
-  //   if (called.current) return
-  //   ;(async () => {
-  //     const whitelistWei = await PinkFlamingoSocialClub.whitelistPriceInWei()
-  //     const publicWei = await PinkFlamingoSocialClub.publicPriceInWei()
-  //     setPublicPriceWei(publicWei)
-  //     setWhitelistPriceWei(whitelistPriceWei)
-  //     setPublicPriceEth(formatEther(publicWei))
-  //     setWhitelistPriceEth(formatEther(whitelistWei))
-  //     called.current = true
-  //   })()
-  // }, [])
+  useEffect(() => {
+    if (called.current) return
+    ;(async () => {
+      const whitelistWei = await PinkFlamingoSocialClub.whitelistPriceInWei()
+      const publicWei = await PinkFlamingoSocialClub.publicPriceInWei()
+      setPublicPriceWei(publicWei)
+      setWhitelistPriceWei(whitelistWei)
+      setPublicPriceEth(formatEther(publicWei))
+      setWhitelistPriceEth(formatEther(whitelistWei))
+      called.current = true
+    })()
+  }, [])
 
   return useMemo(
     () => ({ whitelistPriceEth, publicPriceEth, whitelistPriceWei, publicPriceWei }),
