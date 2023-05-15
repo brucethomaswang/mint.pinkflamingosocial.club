@@ -1,5 +1,8 @@
 import { FC } from 'react'
+import { Routes, Route, Outlet, Link } from 'react-router-dom'
+
 import Mint from 'components/mint'
+import Incubate from 'components/incubate'
 import Header from 'components/header'
 
 import styles from './home.module.scss'
@@ -7,7 +10,12 @@ import styles from './home.module.scss'
 const Home: FC = () => (
   <div className={styles.home}>
     <Header />
-    <Mint />
+    <Routes>
+      <Route path="/">
+        <Route index element={<Mint />} />
+        <Route path="incubate" element={<Incubate />} />
+      </Route>
+    </Routes>
   </div>
 )
 
