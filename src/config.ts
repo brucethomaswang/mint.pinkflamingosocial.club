@@ -1,7 +1,7 @@
 export const etherAddress = '0x0000000000000000000000000000000000000000' // TODO: ??
 export const CONTRACT_ADDRESS = import.meta.env.VITE_APP_CONTRACT_ADDRESS
 export const EGG_ADDRESS = import.meta.env.VITE_APP_EGG_ADDRESS
-export const INCUBATOR_ADDRESS = import.meta.env.VITE_APP_EGG_ADDRESS
+export const INCUBATOR_ADDRESS = import.meta.env.VITE_APP_INCUBATOR_ADDRESS
 export const DEFAULT_PROVIDER = import.meta.env.VITE_APP_RPC_PROVIDER
 export const WSS_PROVIDER = import.meta.env.VITE_APP_WSS_PROVIDER
 export const FALLBACK_PROVIDER = import.meta.env.VITE_APP_FALLBACK_PROVIDER
