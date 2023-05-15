@@ -46,11 +46,7 @@
     text-align: center;
     
     img {
-      width: 300px;
-
-      @include lg {
-        width: 400px;
-      }
+      width: 400px;
 
       @include xxl {
         width: 500px;
