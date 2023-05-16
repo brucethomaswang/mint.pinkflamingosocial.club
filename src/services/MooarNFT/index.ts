@@ -17,7 +17,7 @@ export const functions = {
     return await contract.isApprovedForAll(address, config.incubatorAddress)
   },
   setApprovalForAll: async (signer: any): Promise<any> => {
-    const contract = new Contract(config.incubatorAddress, MOOAR, signer)
+    const contract = new Contract(config.eggAddress, MOOAR, signer)
     return await contract.setApprovalForAll(config.incubatorAddress, true)
   }
 }
