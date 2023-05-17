@@ -1,5 +1,7 @@
+@import '../../index.scss';
+
 .navbar {
-    z-index: 200;
+    z-index: 1000;
     height: 50px;
     background-color: none;
     padding: 10px 20px;
@@ -18,7 +20,7 @@
 
         a {
             text-decoration: none;
-            padding: 1em;
+            padding: 0.4em;
             text-transform: uppercase;
             color: white;
             font-size: 12px;
@@ -27,6 +29,10 @@
 
             &:hover, .active {
                 color:  #EF8395;
+            }
+
+            @include md {
+                padding: 1em;
             }
         }
     }
