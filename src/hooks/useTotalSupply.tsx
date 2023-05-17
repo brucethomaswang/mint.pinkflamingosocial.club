@@ -1,4 +1,4 @@
-import { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useEffect } from 'react'
 
 import { PinkFlamingoSocialClub } from 'services/index'
 import { listener } from 'services/PinkFlamingoSocialClub'

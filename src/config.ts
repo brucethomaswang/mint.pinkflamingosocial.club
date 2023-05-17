@@ -1,5 +1,7 @@
 export const etherAddress = '0x0000000000000000000000000000000000000000' // TODO: ??
 export const CONTRACT_ADDRESS = import.meta.env.VITE_APP_CONTRACT_ADDRESS
+export const EGG_ADDRESS = import.meta.env.VITE_APP_EGG_ADDRESS
+export const INCUBATOR_ADDRESS = import.meta.env.VITE_APP_INCUBATOR_ADDRESS
 export const DEFAULT_PROVIDER = import.meta.env.VITE_APP_RPC_PROVIDER
 export const WSS_PROVIDER = import.meta.env.VITE_APP_WSS_PROVIDER
 export const FALLBACK_PROVIDER = import.meta.env.VITE_APP_FALLBACK_PROVIDER
@@ -12,6 +14,8 @@ export type Configuration = {
   chainId: number
   etherscanUrl: string
   contractAddress: string
+  eggAddress: string
+  incubatorAddress: string
   defaultProvider: string
   fallbackProvider: string
   wssProvider: string
@@ -44,6 +48,8 @@ const configurations: { [env: string]: Configuration } = {
     name: 'goerli',
     chainId: 5,
     contractAddress: CONTRACT_ADDRESS,
+    eggAddress: EGG_ADDRESS,
+    incubatorAddress: INCUBATOR_ADDRESS,
     defaultProvider: DEFAULT_PROVIDER,
     fallbackProvider: FALLBACK_PROVIDER,
     wssProvider: WSS_PROVIDER,
@@ -56,6 +62,8 @@ const configurations: { [env: string]: Configuration } = {
     name: 'homestead',
     chainId: 1,
     contractAddress: CONTRACT_ADDRESS,
+    eggAddress: EGG_ADDRESS,
+    incubatorAddress: INCUBATOR_ADDRESS,
     defaultProvider: DEFAULT_PROVIDER,
     fallbackProvider: FALLBACK_PROVIDER,
     wssProvider: WSS_PROVIDER,
