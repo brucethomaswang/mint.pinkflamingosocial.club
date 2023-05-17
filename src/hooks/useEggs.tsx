@@ -4,7 +4,6 @@ import { MooarNFT } from 'services/index'
 
 async function fetchEggsData(address: string) {
   const balance = (await MooarNFT.balanceOf(address)).toNumber()
-  const isApproved = await MooarNFT.isApproved(address)
 
   const tokenIdsPromises = Array.from({ length: balance }, (_, i) =>
     MooarNFT.tokenOfOwnerByIndex(address, i).then((tokenId) => tokenId.toNumber())
@@ -12,26 +11,40 @@ async function fetchEggsData(address: string) {
 
   const tokenIds = await Promise.all(tokenIdsPromises)
 
-  return { balance, tokenIds, isApproved }
+  return { balance, tokenIds }
 }
 
 export default function useEggs(address: string | null) {
-  const { data, isError, isLoading } = useQuery(['eggs', address], () => fetchEggsData(address!), {
+  const eggData = useQuery(['eggs', address], () => fetchEggsData(address!), {
     enabled: !!address,
     retry: false,
     refetchOnWindowFocus: false,
     staleTime: Infinity
   })
 
+  const approvalData = useQuery(
+    ['approval', address],
+    async () => await MooarNFT.isApproved(address),
+    {
+      enabled: !!address,
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity
+    }
+  )
+
+  const hasEggs = eggData.data && Boolean(eggData.data.balance)
+  const isApproved = approvalData.data
+
   return useMemo(
     () => ({
-      hasEggs: Boolean(data?.balance),
-      balance: data?.balance,
-      tokenIds: data?.tokenIds,
-      isApproved: data?.isApproved,
-      isError,
-      isLoading
+      hasEggs,
+      isApproved,
+      balance: eggData.data && eggData?.data.balance,
+      tokenIds: eggData.data && eggData?.data.tokenIds,
+      eggData,
+      approvalData
     }),
-    [data, isError, isLoading]
+    [eggData, approvalData]
   )
 }

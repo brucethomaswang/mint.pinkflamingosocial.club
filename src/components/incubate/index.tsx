@@ -14,7 +14,7 @@ import { useWeb3 } from 'providers/Web3Provider'
 
 const Mint: FC = () => {
   const { account } = useMetaMask()
-  const { hasEggs, isLoading } = useEggs(account)
+  const { hasEggs, eggData } = useEggs(account)
   return (
     <div className={styles.wrapper}>
       <div className={styles.banner}>
@@ -27,7 +27,7 @@ const Mint: FC = () => {
         <Fragment>
           {account ? (
             <Fragment>
-              {isLoading ? (
+              {eggData.isLoading ? (
                 <div>
                   <ClipLoader color="white" size={50} loading /> <br />
                   Counting your eggs
@@ -77,7 +77,7 @@ interface IIncubateSubmit {}
 const IncubateSubmit: FC<IIncubateSubmit> = () => {
   const { account } = useMetaMask()
   const { wallet } = useWeb3()
-  const { balance, tokenIds, isApproved } = useEggs(account)
+  const { balance, tokenIds, isApproved, approvalData, eggData } = useEggs(account)
 
   const approve = async () => {
     const transaction = await toast.promise(MooarNFT.setApprovalForAll(wallet.signer), {
@@ -90,11 +90,13 @@ const IncubateSubmit: FC<IIncubateSubmit> = () => {
       }
     })
 
-    toast.promise(transaction.wait, {
+    await toast.promise(transaction.wait, {
       pending: 'Waiting...',
       success: 'Incubator Approved',
       error: 'Transaction Reverted'
     })
+
+    await approvalData.refetch()
   }
 
   const incubate = async () => {
@@ -114,11 +116,13 @@ const IncubateSubmit: FC<IIncubateSubmit> = () => {
         }
       })
 
-      toast.promise(transaction.wait, {
+      await toast.promise(transaction.wait, {
         pending: 'Waiting...',
         success: 'Incubation Complete 🧪',
         error: 'Transaction Reverted'
       })
+
+      await eggData.refetch()
     }
   }
 
