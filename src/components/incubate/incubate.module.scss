@@ -48,7 +48,7 @@
     img {
       width: 350px;
 
-      @include l {
+      @include lg {
         width: 400px;
       }
 
